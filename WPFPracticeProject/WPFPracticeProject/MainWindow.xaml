@@ -96,6 +96,48 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Файлы">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Панель управления -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                        <Button x:Name="addFileButton" Content="Добавить файл" Margin="0,0,10,0" 
+                    Click="AddFileButton_Click"/>
+                        <Button x:Name="refreshTreeButton" Content="Обновить" 
+                    Click="RefreshTreeButton_Click"/>
+                    </StackPanel>
+
+                    <!-- Дерево файлов -->
+                    <GroupBox Header="Дерево файлов" Grid.Row="1">
+                        <TreeView x:Name="filesTreeView">
+                            <TreeView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Загрузить содержимое" Click="LoadFileContent_Click"/>
+                                    <MenuItem Header="Удалить файл" Click="DeleteFile_Click"/>
+                                </ContextMenu>
+                            </TreeView.ContextMenu>
+
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </GroupBox>
+
+                    <!-- Содержимое файла -->
+                    <GroupBox Header="Содержимое файла" Grid.Row="2">
+                        <TextBox x:Name="fileContentTextBox" IsReadOnly="True" 
+                    VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

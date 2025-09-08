@@ -1,64 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace WPFPracticeProject
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Главное окно приложения для работы с массивами различных типов данных,
+    /// сортировками и файловой системой
     /// </summary>
     public partial class MainWindow : Window
     {
-        private object[] array;
-        private bool isFirstElementAdded = false;
+        private object[] _array;
+        private bool _isFirstElementAdded = false;
+        private readonly List<AppFile> _appFiles = new List<AppFile>();
 
         public MainWindow()
         {
             InitializeComponent();
+            SubscribeToEvents();
+        }
 
-            intRadioButton.Checked += IntRadioButton_Checked;
-            floatRadioButton.Checked += FloatRadioButton_Checked;
-            dateRadioButton.Checked += DateRadioButton_Checked;
-            arraySizeSlider.ValueChanged += ArraySizeSlider_ValueChanged;
+        /// <summary>
+        /// Подписка на все необходимые события элементов управления
+        /// </summary>
+        private void SubscribeToEvents()
+        {
+            intRadioButton.Checked += OnIntRadioButtonChecked;
+            floatRadioButton.Checked += OnFloatRadioButtonChecked;
+            dateRadioButton.Checked += OnDateRadioButtonChecked;
+            arraySizeSlider.ValueChanged += OnArraySizeSliderValueChanged;
 
-            arraySizeSlider.ValueChanged += (s, e) => {
+            // Обновление текстового поля при изменении размера массива
+            arraySizeSlider.ValueChanged += (s, e) =>
+            {
                 arraySizeText.Text = ((int)arraySizeSlider.Value).ToString();
             };
         }
-        private void IntRadioButton_Checked(object sender, RoutedEventArgs e)
+
+        #region Типы данных
+        /// <summary>
+        /// Обработчик выбора целочисленного типа данных
+        /// </summary>
+        private void OnIntRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             intSlider.IsEnabled = true;
             DatePickerControl.IsEnabled = false;
         }
 
-        private void FloatRadioButton_Checked(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Обработчик выбора дробного типа данных
+        /// </summary>
+        private void OnFloatRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             intSlider.IsEnabled = false;
             DatePickerControl.IsEnabled = false;
         }
 
-        private void DateRadioButton_Checked(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Обработчик выбора типа данных "Дата"
+        /// </summary>
+        private void OnDateRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             intSlider.IsEnabled = false;
             DatePickerControl.IsEnabled = true;
         }
+        #endregion
 
-        private void ArraySizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        #region Работа с массивами
+        /// <summary>
+        /// Обработчик изменения размера массива через слайдер
+        /// </summary>
+        private void OnArraySizeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int size = (int)arraySizeSlider.Value;
-            array = new object[size];
+            _array = new object[size];
 
+            // Очищаем и создаем новые поля для ввода элементов
             arrayInputItems.Items.Clear();
             for (int i = 0; i < size; i++)
             {
@@ -68,70 +88,124 @@ namespace WPFPracticeProject
             UpdateArrayDisplay();
         }
 
-        private void ArrayElement_TextChanged(object sender, TextChangedEventArgs e)
+        /// <summary>
+        /// Обработчик изменения текста в элементах массива
+        /// </summary>
+        private void OnArrayElementTextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = (TextBox)sender;
-            var item = (StackPanel)textBox.Parent; 
-            var indexText = (TextBlock)item.Children[1];
+            var stackPanel = (StackPanel)textBox.Parent;
+            var indexText = (TextBlock)stackPanel.Children[1];
             int index = int.Parse(indexText.Text);
 
-            if (intRadioButton.IsChecked == true)
-            {
-                if (int.TryParse(textBox.Text, out int value))
-                    array[index] = value;
-            }
-            else if (floatRadioButton.IsChecked == true)
-            {
-                if (float.TryParse(textBox.Text, out float value))
-                    array[index] = value;
-            }
-            else if (dateRadioButton.IsChecked == true)
-            {
-                if (DateTime.TryParse(textBox.Text, out DateTime value))
-                    array[index] = value;
-            }
-
-            if (!isFirstElementAdded && array.Any(arrayItem => arrayItem != null))
-            {
-                isFirstElementAdded = true;
-            }
-
+            UpdateArrayElementValue(textBox.Text, index);
+            CheckFirstElementAddition();
             CheckArrayCompletion();
             UpdateArrayDisplay();
-
         }
 
-        private void SortButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Обновление значения элемента массива в соответствии с выбранным типом данных
+        /// </summary>
+        private void UpdateArrayElementValue(string text, int index)
         {
-            if (array == null || array.Length == 0) return;
+            if (intRadioButton.IsChecked == true && int.TryParse(text, out int intValue))
+            {
+                _array[index] = intValue;
+            }
+            else if (floatRadioButton.IsChecked == true && float.TryParse(text, out float floatValue))
+            {
+                _array[index] = floatValue;
+            }
+            else if (dateRadioButton.IsChecked == true && DateTime.TryParse(text, out DateTime dateValue))
+            {
+                _array[index] = dateValue;
+            }
+        }
+
+        /// <summary>
+        /// Проверка добавления первого элемента для блокировки изменения типа данных
+        /// </summary>
+        private void CheckFirstElementAddition()
+        {
+            if (!_isFirstElementAdded && _array.Any(item => item != null))
+            {
+                _isFirstElementAdded = true;
+            }
+        }
+
+        /// <summary>
+        /// Обновление отображения массива в текстовом поле
+        /// </summary>
+        private void UpdateArrayDisplay()
+        {
+            if (_array == null) return;
+
+            arrayDisplay.Text = string.Join(Environment.NewLine,
+                _array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
+        }
+
+        /// <summary>
+        /// Проверка полного заполнения массива для активации вкладки сортировок
+        /// </summary>
+        private void CheckArrayCompletion()
+        {
+            bool isArrayFull = _array != null && _array.All(item => item != null);
+            sortTab.IsEnabled = isArrayFull;
+        }
+        #endregion
+
+        #region Сортировки
+        /// <summary>
+        /// Обработчик нажатия кнопки выполнения сортировки
+        /// </summary>
+        private void OnSortButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_array == null || _array.Length == 0) return;
 
             try
             {
-                object[] sortedArray = (object[])array.Clone();
-
-                if (bubbleSortRadio.IsChecked == true)
-                {
-                    BubbleSort(sortedArray);
-                }
-                else if (selectionSortRadio.IsChecked == true)
-                {
-                    SelectionSort(sortedArray);
-                }
-                else if (quickSortRadio.IsChecked == true)
-                {
-                    QuickSort(sortedArray, 0, sortedArray.Length - 1);
-                }
-
-                sortedArrayDisplay.Text = string.Join(Environment.NewLine,
-                    sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
+                object[] sortedArray = (object[])_array.Clone();
+                PerformSorting(sortedArray);
+                DisplaySortedArray(sortedArray);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сортировке: {ex.Message}");
+                ShowErrorMessage($"Ошибка при сортировке: {ex.Message}");
             }
         }
 
-        // Сортировка выбором
+        /// <summary>
+        /// Выполнение выбранного алгоритма сортировки
+        /// </summary>
+        private void PerformSorting(object[] arrayToSort)
+        {
+            if (bubbleSortRadio.IsChecked == true)
+            {
+                BubbleSort(arrayToSort);
+            }
+            else if (selectionSortRadio.IsChecked == true)
+            {
+                SelectionSort(arrayToSort);
+            }
+            else if (quickSortRadio.IsChecked == true)
+            {
+                QuickSort(arrayToSort, 0, arrayToSort.Length - 1);
+            }
+        }
+
+        /// <summary>
+        /// Отображение отсортированного массива в интерфейсе
+        /// </summary>
+        private void DisplaySortedArray(object[] sortedArray)
+        {
+            sortedArrayDisplay.Text = string.Join(Environment.NewLine,
+                sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
+        }
+
+        /// <summary>
+        /// Алгоритм сортировки выбором
+        /// </summary>
         private void SelectionSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
@@ -144,11 +218,13 @@ namespace WPFPracticeProject
                         minIndex = j;
                     }
                 }
-                (arr[i], arr[minIndex]) = (arr[minIndex], arr[i]);
+                Swap(arr, i, minIndex);
             }
         }
 
-        // Быстрая сортировка
+        /// <summary>
+        /// Алгоритм быстрой сортировки (рекурсивный)
+        /// </summary>
         private void QuickSort(object[] arr, int left, int right)
         {
             if (left < right)
@@ -159,6 +235,9 @@ namespace WPFPracticeProject
             }
         }
 
+        /// <summary>
+        /// Вспомогательный метод для быстрой сортировки - разделение массива
+        /// </summary>
         private int Partition(object[] arr, int left, int right)
         {
             object pivot = arr[right];
@@ -169,14 +248,16 @@ namespace WPFPracticeProject
                 if (CompareObjects(arr[j], pivot) <= 0)
                 {
                     i++;
-                    (arr[i], arr[j]) = (arr[j], arr[i]);
+                    Swap(arr, i, j);
                 }
             }
-            (arr[i + 1], arr[right]) = (arr[right], arr[i + 1]);
+            Swap(arr, i + 1, right);
             return i + 1;
         }
 
-        // Пузырьковая сортировка
+        /// <summary>
+        /// Алгоритм пузырьковой сортировки
+        /// </summary>
         private void BubbleSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
@@ -185,29 +266,203 @@ namespace WPFPracticeProject
                 {
                     if (CompareObjects(arr[j], arr[j + 1]) > 0)
                     {
-                        (arr[j], arr[j + 1]) = (arr[j + 1], arr[j]);
+                        Swap(arr, j, j + 1);
                     }
                 }
             }
         }
 
-        // Вспомогательный метод для сравнения
+        /// <summary>
+        /// Обмен элементов массива местами
+        /// </summary>
+        private void Swap(object[] arr, int index1, int index2)
+        {
+            (arr[index1], arr[index2]) = (arr[index2], arr[index1]);
+        }
+
+        /// <summary>
+        /// Сравнение двух объектов для сортировки
+        /// </summary>
         private int CompareObjects(object a, object b)
         {
             return ((IComparable)a).CompareTo(b);
         }
+        #endregion
 
-        private void UpdateArrayDisplay()
+        #region Работа с файлами
+        /// <summary>
+        /// Обработчик добавления нового файла в дерево
+        /// </summary>
+        private void OnAddFileButtonClick(object sender, RoutedEventArgs e)
         {
-            arrayDisplay.Text = string.Join(Environment.NewLine,
-                array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
+            try
+            {
+                var dialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    AddNewFile(dialog.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка при добавлении файла: {ex.Message}");
+            }
         }
-        private void CheckArrayCompletion()
+
+        /// <summary>
+        /// Добавление нового файла в коллекцию приложения
+        /// </summary>
+        private void AddNewFile(string filePath)
         {
-            bool isArrayFull = array != null && array.All(item => item != null);
-            sortTab.IsEnabled = isArrayFull; // Включаем/выключаем вкладку сортировок
+            var newFile = new AppFile
+            {
+                Name = System.IO.Path.GetFileName(filePath),
+                Content = "Содержимое файла будет здесь..."
+            };
+
+            _appFiles.Add(newFile);
+            UpdateFilesTree();
         }
 
+        /// <summary>
+        /// Обновление дерева файлов в интерфейсе
+        /// </summary>
+        private void UpdateFilesTree()
+        {
+            filesTreeView.Items.Clear();
 
+            var rootNode = new FileNode
+            {
+                Name = "Файлы приложения",
+                IsDirectory = true
+            };
+
+            foreach (var file in _appFiles)
+            {
+                rootNode.Children.Add(new FileNode
+                {
+                    Name = file.Name,
+                    Path = file.Name,
+                    IsDirectory = false
+                });
+            }
+
+            filesTreeView.Items.Add(rootNode);
+        }
+
+        /// <summary>
+        /// Обработчик загрузки содержимого выбранного файла
+        /// </summary>
+        private void OnLoadFileContentClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var selectedNode = filesTreeView.SelectedItem as FileNode;
+                if (selectedNode == null || selectedNode.IsDirectory) return;
+
+                LoadFileContent(selectedNode.Name);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка при загрузке содержимого: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Загрузка и отображение содержимого файла
+        /// </summary>
+        private void LoadFileContent(string fileName)
+        {
+            var file = _appFiles.FirstOrDefault(f => f.Name == fileName);
+            if (file != null)
+            {
+                fileContentTextBox.Text = file.Content;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик обновления дерева файлов
+        /// </summary>
+        private void OnRefreshTreeButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                UpdateFilesTree();
+                ShowInformationMessage("Дерево файлов обновлено");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка при обновлении дерева: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Обработчик удаления файла из дерева
+        /// </summary>
+        private void OnDeleteFileClick(object sender, RoutedEventArgs e)
+        {
+            var selectedNode = filesTreeView.SelectedItem as FileNode;
+            if (selectedNode == null || selectedNode.IsDirectory) return;
+
+            DeleteFileWithConfirmation(selectedNode.Name);
+        }
+
+        /// <summary>
+        /// Удаление файла с подтверждением действия
+        /// </summary>
+        private void DeleteFileWithConfirmation(string fileName)
+        {
+            var result = MessageBox.Show($"Удалить файл {fileName}?",
+                "Подтверждение", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _appFiles.RemoveAll(f => f.Name == fileName);
+                UpdateFilesTree();
+                fileContentTextBox.Text = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Показать сообщение об ошибке
+        /// </summary>
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        /// <summary>
+        /// Показать информационное сообщение
+        /// </summary>
+        private void ShowInformationMessage(string message)
+        {
+            MessageBox.Show(message, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Класс узла дерева файлов
+    /// </summary>
+    public class FileNode
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public bool IsDirectory { get; set; }
+        public List<FileNode> Children { get; set; } = new List<FileNode>();
+    }
+
+    /// <summary>
+    /// Класс файла приложения для хранения метаинформации и содержимого
+    /// </summary>
+    public class AppFile
+    {
+        public string Name { get; set; }
+        public string Content { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
     }
 }

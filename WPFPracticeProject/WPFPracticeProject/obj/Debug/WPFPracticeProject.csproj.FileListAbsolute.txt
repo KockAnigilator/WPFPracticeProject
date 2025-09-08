@@ -18,7 +18,6 @@ C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPract
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\bin\Debug\WPFPracticeProject.exe
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\bin\Debug\WPFPracticeProject.pdb
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.csproj.AssemblyReference.cache
-C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.exe.config
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\obj\Debug\MainWindow.g.cs
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\obj\Debug\App.g.cs
 C:\Users\Dmitriy\Documents\GitHub\WPFPracticeProject\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject_MarkupCompile.cache
