@@ -113,6 +113,15 @@ namespace WPFPracticeProject
                 {
                     BubbleSort(sortedArray);
                 }
+                else if (selectionSortRadio.IsChecked == true)
+                {
+                    SelectionSort(sortedArray);
+                }
+                else if (quickSortRadio.IsChecked == true)
+                {
+                    QuickSort(sortedArray, 0, sortedArray.Length - 1);
+                }
+
                 sortedArrayDisplay.Text = string.Join(Environment.NewLine,
                     sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
             }
@@ -122,6 +131,52 @@ namespace WPFPracticeProject
             }
         }
 
+        // Сортировка выбором
+        private void SelectionSort(object[] arr)
+        {
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                int minIndex = i;
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (CompareObjects(arr[j], arr[minIndex]) < 0)
+                    {
+                        minIndex = j;
+                    }
+                }
+                (arr[i], arr[minIndex]) = (arr[minIndex], arr[i]);
+            }
+        }
+
+        // Быстрая сортировка
+        private void QuickSort(object[] arr, int left, int right)
+        {
+            if (left < right)
+            {
+                int pivotIndex = Partition(arr, left, right);
+                QuickSort(arr, left, pivotIndex - 1);
+                QuickSort(arr, pivotIndex + 1, right);
+            }
+        }
+
+        private int Partition(object[] arr, int left, int right)
+        {
+            object pivot = arr[right];
+            int i = left - 1;
+
+            for (int j = left; j < right; j++)
+            {
+                if (CompareObjects(arr[j], pivot) <= 0)
+                {
+                    i++;
+                    (arr[i], arr[j]) = (arr[j], arr[i]);
+                }
+            }
+            (arr[i + 1], arr[right]) = (arr[right], arr[i + 1]);
+            return i + 1;
+        }
+
+        // Пузырьковая сортировка
         private void BubbleSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
@@ -136,6 +191,7 @@ namespace WPFPracticeProject
             }
         }
 
+        // Вспомогательный метод для сравнения
         private int CompareObjects(object a, object b)
         {
             return ((IComparable)a).CompareTo(b);
@@ -149,8 +205,9 @@ namespace WPFPracticeProject
         private void CheckArrayCompletion()
         {
             bool isArrayFull = array != null && array.All(item => item != null);
-            sortTab.IsEnabled = isArrayFull;
+            sortTab.IsEnabled = isArrayFull; // Включаем/выключаем вкладку сортировок
         }
+
 
     }
 }
