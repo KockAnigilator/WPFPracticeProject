@@ -65,7 +65,37 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            
+
+            <TabItem Header="Сортировки" x:Name="sortTab" IsEnabled="False">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Выбор сортировки -->
+                    <GroupBox Header="Выбор сортировки" Grid.Row="0">
+                        <StackPanel>
+                            <RadioButton x:Name="bubbleSortRadio" Content="Пузырьковая сортировка" GroupName="SortGroup" Margin="5"/>
+                            <RadioButton x:Name="selectionSortRadio" Content="Сортировка выбором" GroupName="SortGroup" Margin="5"/>
+                            <RadioButton x:Name="quickSortRadio" Content="Быстрая сортировка" GroupName="SortGroup" Margin="5"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Кнопка сортировки -->
+                    <Button x:Name="sortButton" Content="Выполнить сортировку" Grid.Row="1" 
+                Margin="0,10" Padding="10,5" HorizontalAlignment="Left"
+                Click="SortButton_Click"/>
+
+                    <!-- Результат сортировки -->
+                    <GroupBox Header="Результат сортировки" Grid.Row="2">
+                        <TextBox x:Name="sortedArrayDisplay" IsReadOnly="True" 
+                    VerticalScrollBarVisibility="Auto"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

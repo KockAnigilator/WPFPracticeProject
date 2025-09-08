@@ -96,7 +96,49 @@ namespace WPFPracticeProject
                 isFirstElementAdded = true;
             }
 
+            CheckArrayCompletion();
             UpdateArrayDisplay();
+
+        }
+
+        private void SortButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (array == null || array.Length == 0) return;
+
+            try
+            {
+                object[] sortedArray = (object[])array.Clone();
+
+                if (bubbleSortRadio.IsChecked == true)
+                {
+                    BubbleSort(sortedArray);
+                }
+                sortedArrayDisplay.Text = string.Join(Environment.NewLine,
+                    sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сортировке: {ex.Message}");
+            }
+        }
+
+        private void BubbleSort(object[] arr)
+        {
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                for (int j = 0; j < arr.Length - 1 - i; j++)
+                {
+                    if (CompareObjects(arr[j], arr[j + 1]) > 0)
+                    {
+                        (arr[j], arr[j + 1]) = (arr[j + 1], arr[j]);
+                    }
+                }
+            }
+        }
+
+        private int CompareObjects(object a, object b)
+        {
+            return ((IComparable)a).CompareTo(b);
         }
 
         private void UpdateArrayDisplay()
@@ -104,5 +146,11 @@ namespace WPFPracticeProject
             arrayDisplay.Text = string.Join(Environment.NewLine,
                 array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
         }
+        private void CheckArrayCompletion()
+        {
+            bool isArrayFull = array != null && array.All(item => item != null);
+            sortTab.IsEnabled = isArrayFull;
+        }
+
     }
 }
