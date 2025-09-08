@@ -1,0 +1,16 @@
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\bin\Debug\WPFPracticeProject.exe.config
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\bin\Debug\WPFPracticeProject.exe
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\bin\Debug\WPFPracticeProject.pdb
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.csproj.AssemblyReference.cache
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\MainWindow.g.cs
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\App.g.cs
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject_MarkupCompile.cache
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject_MarkupCompile.lref
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\MainWindow.baml
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.g.resources
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.Properties.Resources.resources
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.csproj.GenerateResource.cache
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.csproj.CoreCompileInputs.cache
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.exe
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.pdb
+C:\Users\Dmitriy\source\repos\WPFPracticeProject\WPFPracticeProject\obj\Debug\WPFPracticeProject.exe.config

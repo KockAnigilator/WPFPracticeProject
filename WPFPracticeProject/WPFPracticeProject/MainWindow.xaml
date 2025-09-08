@@ -1,0 +1,71 @@
+﻿<Window x:Class="WPFPracticeProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFPracticeProject"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            
+            <TabItem Header="Тип данных">
+                <GroupBox Header="Выбор типа данных" Margin="10">
+                    <StackPanel Orientation="Vertical">
+                    
+                        <RadioButton x:Name="intRadioButton" Content="Целочисленный (int)" GroupName="DataTypeGroup"/>
+                        <Slider x:Name="intSlider" Minimum="1" Maximum="100" IsEnabled="False" Margin="20,0,0,0" ToolTip="Выберите целочисленное значение"/>
+                    
+                        <RadioButton x:Name="floatRadioButton" Content="Дробный (float)" GroupName="DataTypeGroup"/>
+                    
+                        <RadioButton x:Name="dateRadioButton" Content="Дата" GroupName="DataTypeGroup"/>
+                        <DatePicker x:Name="DatePickerControl" IsEnabled="False" Margin="20,0,0,0" ToolTip="Выберите дату"/>
+                    
+                    </StackPanel>
+                </GroupBox>
+            </TabItem>
+
+            <TabItem Header="Массив">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Размер массива -->
+                    <GroupBox Header="Размер массива" Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Slider x:Name="arraySizeSlider" Minimum="1" Maximum="10" Width="200"/>
+                            <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Ввод элементов -->
+                    <GroupBox Header="Ввод элементов" Grid.Row="1">
+                        <ItemsControl x:Name="arrayInputItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                                        <TextBlock Text="Элемент [" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding Index}"/>
+                                        <TextBlock Text="]: " Margin="5,0"/>
+                                        <TextBox Width="100" TextChanged="ArrayElement_TextChanged"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Отображение массива -->
+                    <GroupBox Header="Массив" Grid.Row="2">
+                        <TextBox x:Name="arrayDisplay" Height="100" IsReadOnly="True" 
+                                VerticalScrollBarVisibility="Auto"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            
+        </TabControl>
+    </Grid>
+</Window>
