@@ -1,131 +1,317 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using Microsoft.Win32;
 
 namespace WPFPracticeProject
 {
-    /// <summary>
-    /// Главное окно приложения для работы с массивами различных типов данных,
-    /// сортировками и файловой системой
-    /// </summary>
     public partial class MainWindow : Window
     {
         private object[] _array;
         private bool _isFirstElementAdded = false;
         private readonly List<AppFile> _appFiles = new List<AppFile>();
+        private Type _currentDataType = typeof(int);
 
         public MainWindow()
         {
             InitializeComponent();
             SubscribeToEvents();
+            InitializeApplication();
         }
 
         /// <summary>
-        /// Подписка на все необходимые события элементов управления
+        /// Инициализация приложения
+        /// </summary>
+        private void InitializeApplication()
+        {
+            try
+            {
+                // Устанавливаем обработчики и начальные значения
+                arraySizeSlider.Value = 5;
+                intRadioButton.IsChecked = true;
+                UpdateHelpText("Выберите тип данных для работы с массивом");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка инициализации приложения: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Подписка на события элементов управления
         /// </summary>
         private void SubscribeToEvents()
         {
-            intRadioButton.Checked += OnIntRadioButtonChecked;
-            floatRadioButton.Checked += OnFloatRadioButtonChecked;
-            dateRadioButton.Checked += OnDateRadioButtonChecked;
-            arraySizeSlider.ValueChanged += OnArraySizeSliderValueChanged;
-
-            // Обновление текстового поля при изменении размера массива
-            arraySizeSlider.ValueChanged += (s, e) =>
+            try
             {
-                arraySizeText.Text = ((int)arraySizeSlider.Value).ToString();
-            };
+                intRadioButton.Checked += OnIntRadioButtonChecked;
+                floatRadioButton.Checked += OnFloatRadioButtonChecked;
+                dateRadioButton.Checked += OnDateRadioButtonChecked;
+                arraySizeSlider.ValueChanged += OnArraySizeSliderValueChanged;
+
+                arraySizeSlider.ValueChanged += (s, e) =>
+                {
+                    arraySizeText.Text = $"Размер: {(int)arraySizeSlider.Value}";
+                };
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка подписки на события: {ex.Message}");
+            }
         }
+
+        #region Обработчики меню и тулбара
+
+        /// <summary>
+        /// Обработчик изменения вкладки
+        /// </summary>
+        private void OnTabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Source is TabControl tabControl && tabControl.SelectedItem is TabItem selectedTab)
+                {
+                    toolbarTitle.Text = selectedTab.Header.ToString();
+                    UpdateHelpTextBasedOnTab(selectedTab.Header.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка при переключении вкладки: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Обновление текста подсказки в зависимости от вкладки
+        /// </summary>
+        private void UpdateHelpTextBasedOnTab(string tabName)
+        {
+            switch (tabName)
+            {
+                case "Тип данных":
+                    UpdateHelpText("Выберите тип данных для работы с массивом");
+                    break;
+                case "Массив":
+                    UpdateHelpText("Задайте размер массива и заполните элементы. Тип данных: " + _currentDataType.Name);
+                    break;
+                case "Сортировки":
+                    UpdateHelpText("Выберите алгоритм сортировки и нажмите кнопку выполнения");
+                    break;
+                case "Файлы":
+                    UpdateHelpText("Управление файлами проекта. Используйте контекстное меню для действий с файлами");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Показать подсказку
+        /// </summary>
+        private void OnHelpClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                helpPopup.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка отображения подсказки: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Обновление текста подсказки
+        /// </summary>
+        private void UpdateHelpText(string text)
+        {
+            helpText.Text = text;
+        }
+
+        /// <summary>
+        /// Сохранение через меню
+        /// </summary>
+        private void OnMenuSaveClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new SaveFileDialog
+                {
+                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                    Title = "Сохранить данные массива"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    SaveArrayToFile(dialog.FileName);
+                    AddFileToTree(dialog.FileName);
+                    ShowInformationMessage($"Файл успешно сохранен: {Path.GetFileName(dialog.FileName)}");
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ShowErrorMessage("Нет прав для сохранения файла в выбранной директории");
+            }
+            catch (IOException ioEx)
+            {
+                ShowErrorMessage($"Ошибка ввода-вывода: {ioEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка сохранения: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Загрузка через меню
+        /// </summary>
+        private void OnMenuLoadClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new OpenFileDialog
+                {
+                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                    Title = "Загрузить данные массива"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    LoadArrayFromFile(dialog.FileName);
+                    AddFileToTree(dialog.FileName);
+                    ShowInformationMessage($"Файл успешно загружен: {Path.GetFileName(dialog.FileName)}");
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                ShowErrorMessage("Файл не найден");
+            }
+            catch (IOException ioEx)
+            {
+                ShowErrorMessage($"Ошибка чтения файла: {ioEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка загрузки: {ex.Message}");
+            }
+        }
+
+        private void OnExitClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OnAboutClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Мастер работы с массивами\nВерсия 1.0", "О программе");
+        }
+
+        #endregion
 
         #region Типы данных
-        /// <summary>
-        /// Обработчик выбора целочисленного типа данных
-        /// </summary>
+
         private void OnIntRadioButtonChecked(object sender, RoutedEventArgs e)
         {
-            intSlider.IsEnabled = true;
-            DatePickerControl.IsEnabled = false;
+            _currentDataType = typeof(int);
+            UpdateHelpText("Выбран целочисленный тип данных (int)");
         }
 
-        /// <summary>
-        /// Обработчик выбора дробного типа данных
-        /// </summary>
         private void OnFloatRadioButtonChecked(object sender, RoutedEventArgs e)
         {
-            intSlider.IsEnabled = false;
-            DatePickerControl.IsEnabled = false;
+            _currentDataType = typeof(float);
+            UpdateHelpText("Выбран дробный тип данных (float)");
         }
 
-        /// <summary>
-        /// Обработчик выбора типа данных "Дата"
-        /// </summary>
         private void OnDateRadioButtonChecked(object sender, RoutedEventArgs e)
         {
-            intSlider.IsEnabled = false;
-            DatePickerControl.IsEnabled = true;
+            _currentDataType = typeof(DateTime);
+            UpdateHelpText("Выбран тип данных Дата");
         }
+
         #endregion
 
         #region Работа с массивами
-        /// <summary>
-        /// Обработчик изменения размера массива через слайдер
-        /// </summary>
+
         private void OnArraySizeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int size = (int)arraySizeSlider.Value;
-            _array = new object[size];
-
-            // Очищаем и создаем новые поля для ввода элементов
-            arrayInputItems.Items.Clear();
-            for (int i = 0; i < size; i++)
+            try
             {
-                arrayInputItems.Items.Add(new { Index = i });
-            }
+                int size = (int)arraySizeSlider.Value;
+                _array = new object[size];
 
-            UpdateArrayDisplay();
+                arrayInputItems.Items.Clear();
+                for (int i = 0; i < size; i++)
+                {
+                    arrayInputItems.Items.Add(new { Index = i });
+                }
+
+                UpdateArrayDisplay();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка изменения размера массива: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Обработчик изменения текста в элементах массива
-        /// </summary>
         private void OnArrayElementTextChanged(object sender, TextChangedEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            var stackPanel = (StackPanel)textBox.Parent;
-            var indexText = (TextBlock)stackPanel.Children[1];
-            int index = int.Parse(indexText.Text);
+            try
+            {
+                var textBox = (TextBox)sender;
+                var stackPanel = (StackPanel)textBox.Parent;
+                var indexText = (TextBlock)stackPanel.Children[1];
+                int index = int.Parse(indexText.Text);
 
-            UpdateArrayElementValue(textBox.Text, index);
-            CheckFirstElementAddition();
-            CheckArrayCompletion();
-            UpdateArrayDisplay();
+                UpdateArrayElementValue(textBox.Text, index);
+                CheckFirstElementAddition();
+                CheckArrayCompletion();
+                UpdateArrayDisplay();
+            }
+            catch (FormatException)
+            {
+                ShowErrorMessage("Неверный формат данных. Проверьте ввод.");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка обработки ввода: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Обновление значения элемента массива в соответствии с выбранным типом данных
-        /// </summary>
         private void UpdateArrayElementValue(string text, int index)
         {
-            if (intRadioButton.IsChecked == true && int.TryParse(text, out int intValue))
+            if (string.IsNullOrWhiteSpace(text))
             {
-                _array[index] = intValue;
+                _array[index] = null;
+                return;
             }
-            else if (floatRadioButton.IsChecked == true && float.TryParse(text, out float floatValue))
+
+            try
             {
-                _array[index] = floatValue;
+                if (_currentDataType == typeof(int) && int.TryParse(text, out int intValue))
+                {
+                    _array[index] = intValue;
+                }
+                else if (_currentDataType == typeof(float) && float.TryParse(text, out float floatValue))
+                {
+                    _array[index] = floatValue;
+                }
+                else if (_currentDataType == typeof(DateTime) && DateTime.TryParse(text, out DateTime dateValue))
+                {
+                    _array[index] = dateValue;
+                }
+                else
+                {
+                    throw new FormatException("Неверный формат данных для выбранного типа");
+                }
             }
-            else if (dateRadioButton.IsChecked == true && DateTime.TryParse(text, out DateTime dateValue))
+            catch (FormatException ex)
             {
-                _array[index] = dateValue;
+                ShowErrorMessage($"Ошибка формата: {ex.Message}");
+                _array[index] = null;
             }
         }
 
-        /// <summary>
-        /// Проверка добавления первого элемента для блокировки изменения типа данных
-        /// </summary>
         private void CheckFirstElementAddition()
         {
             if (!_isFirstElementAdded && _array.Any(item => item != null))
@@ -134,31 +320,38 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Обновление отображения массива в текстовом поле
-        /// </summary>
         private void UpdateArrayDisplay()
         {
-            if (_array == null) return;
+            try
+            {
+                if (_array == null) return;
 
-            arrayDisplay.Text = string.Join(Environment.NewLine,
-                _array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
+                arrayDisplay.Text = string.Join(Environment.NewLine,
+                    _array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка отображения массива: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Проверка полного заполнения массива для активации вкладки сортировок
-        /// </summary>
         private void CheckArrayCompletion()
         {
-            bool isArrayFull = _array != null && _array.All(item => item != null);
-            sortTab.IsEnabled = isArrayFull;
+            try
+            {
+                bool isArrayFull = _array != null && _array.All(item => item != null);
+                sortTab.IsEnabled = isArrayFull;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка проверки заполнения массива: {ex.Message}");
+            }
         }
+
         #endregion
 
         #region Сортировки
-        /// <summary>
-        /// Обработчик нажатия кнопки выполнения сортировки
-        /// </summary>
+
         private void OnSortButtonClick(object sender, RoutedEventArgs e)
         {
             if (_array == null || _array.Length == 0) return;
@@ -169,15 +362,16 @@ namespace WPFPracticeProject
                 PerformSorting(sortedArray);
                 DisplaySortedArray(sortedArray);
             }
+            catch (InvalidOperationException ex)
+            {
+                ShowErrorMessage($"Ошибка сортировки: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                ShowErrorMessage($"Ошибка при сортировке: {ex.Message}");
+                ShowErrorMessage($"Неожиданная ошибка при сортировке: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Выполнение выбранного алгоритма сортировки
-        /// </summary>
         private void PerformSorting(object[] arrayToSort)
         {
             if (bubbleSortRadio.IsChecked == true)
@@ -192,20 +386,18 @@ namespace WPFPracticeProject
             {
                 QuickSort(arrayToSort, 0, arrayToSort.Length - 1);
             }
+            else
+            {
+                throw new InvalidOperationException("Не выбран алгоритм сортировки");
+            }
         }
 
-        /// <summary>
-        /// Отображение отсортированного массива в интерфейсе
-        /// </summary>
         private void DisplaySortedArray(object[] sortedArray)
         {
             sortedArrayDisplay.Text = string.Join(Environment.NewLine,
                 sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
         }
 
-        /// <summary>
-        /// Алгоритм сортировки выбором
-        /// </summary>
         private void SelectionSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
@@ -222,9 +414,6 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Алгоритм быстрой сортировки (рекурсивный)
-        /// </summary>
         private void QuickSort(object[] arr, int left, int right)
         {
             if (left < right)
@@ -235,9 +424,6 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Вспомогательный метод для быстрой сортировки - разделение массива
-        /// </summary>
         private int Partition(object[] arr, int left, int right)
         {
             object pivot = arr[right];
@@ -255,9 +441,6 @@ namespace WPFPracticeProject
             return i + 1;
         }
 
-        /// <summary>
-        /// Алгоритм пузырьковой сортировки
-        /// </summary>
         private void BubbleSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
@@ -272,34 +455,32 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Обмен элементов массива местами
-        /// </summary>
         private void Swap(object[] arr, int index1, int index2)
         {
             (arr[index1], arr[index2]) = (arr[index2], arr[index1]);
         }
 
-        /// <summary>
-        /// Сравнение двух объектов для сортировки
-        /// </summary>
         private int CompareObjects(object a, object b)
         {
+            if (a == null && b == null) return 0;
+            if (a == null) return -1;
+            if (b == null) return 1;
+
             return ((IComparable)a).CompareTo(b);
         }
+
         #endregion
 
         #region Работа с файлами
-        /// <summary>
-        /// Обработчик добавления нового файла в дерево
-        /// </summary>
+
         private void OnAddFileButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                var dialog = new Microsoft.Win32.SaveFileDialog
+                var dialog = new SaveFileDialog
                 {
-                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
+                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                    Title = "Создать новый файл"
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -309,54 +490,84 @@ namespace WPFPracticeProject
             }
             catch (Exception ex)
             {
-                ShowErrorMessage($"Ошибка при добавлении файла: {ex.Message}");
+                ShowErrorMessage($"Ошибка при создании файла: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Добавление нового файла в коллекцию приложения
-        /// </summary>
         private void AddNewFile(string filePath)
         {
-            var newFile = new AppFile
+            try
             {
-                Name = System.IO.Path.GetFileName(filePath),
-                Content = "Содержимое файла будет здесь..."
-            };
+                var newFile = new AppFile
+                {
+                    Name = Path.GetFileName(filePath),
+                    Content = "Содержимое файла будет здесь...",
+                    FilePath = filePath
+                };
 
-            _appFiles.Add(newFile);
-            UpdateFilesTree();
+                _appFiles.Add(newFile);
+                UpdateFilesTree();
+                ShowInformationMessage($"Файл добавлен: {newFile.Name}");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка добавления файла: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Обновление дерева файлов в интерфейсе
-        /// </summary>
+        private void AddFileToTree(string filePath)
+        {
+            try
+            {
+                var fileName = Path.GetFileName(filePath);
+                if (!_appFiles.Any(f => f.Name == fileName))
+                {
+                    var newFile = new AppFile
+                    {
+                        Name = fileName,
+                        Content = File.ReadAllText(filePath),
+                        FilePath = filePath
+                    };
+                    _appFiles.Add(newFile);
+                    UpdateFilesTree();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка добавления файла в дерево: {ex.Message}");
+            }
+        }
+
         private void UpdateFilesTree()
         {
-            filesTreeView.Items.Clear();
-
-            var rootNode = new FileNode
+            try
             {
-                Name = "Файлы приложения",
-                IsDirectory = true
-            };
+                filesTreeView.Items.Clear();
 
-            foreach (var file in _appFiles)
-            {
-                rootNode.Children.Add(new FileNode
+                var rootNode = new FileNode
                 {
-                    Name = file.Name,
-                    Path = file.Name,
-                    IsDirectory = false
-                });
-            }
+                    Name = "Файлы проекта",
+                    IsDirectory = true
+                };
 
-            filesTreeView.Items.Add(rootNode);
+                foreach (var file in _appFiles)
+                {
+                    rootNode.Children.Add(new FileNode
+                    {
+                        Name = file.Name,
+                        Path = file.FilePath,
+                        IsDirectory = false
+                    });
+                }
+
+                filesTreeView.Items.Add(rootNode);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка обновления дерева файлов: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Обработчик загрузки содержимого выбранного файла
-        /// </summary>
         private void OnLoadFileContentClick(object sender, RoutedEventArgs e)
         {
             try
@@ -372,21 +583,22 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Загрузка и отображение содержимого файла
-        /// </summary>
         private void LoadFileContent(string fileName)
         {
-            var file = _appFiles.FirstOrDefault(f => f.Name == fileName);
-            if (file != null)
+            try
             {
-                fileContentTextBox.Text = file.Content;
+                var file = _appFiles.FirstOrDefault(f => f.Name == fileName);
+                if (file != null)
+                {
+                    fileContentTextBox.Text = file.Content;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка загрузки содержимого файла: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Обработчик обновления дерева файлов
-        /// </summary>
         private void OnRefreshTreeButtonClick(object sender, RoutedEventArgs e)
         {
             try
@@ -400,48 +612,84 @@ namespace WPFPracticeProject
             }
         }
 
-        /// <summary>
-        /// Обработчик удаления файла из дерева
-        /// </summary>
         private void OnDeleteFileClick(object sender, RoutedEventArgs e)
         {
-            var selectedNode = filesTreeView.SelectedItem as FileNode;
-            if (selectedNode == null || selectedNode.IsDirectory) return;
-
-            DeleteFileWithConfirmation(selectedNode.Name);
-        }
-
-        /// <summary>
-        /// Удаление файла с подтверждением действия
-        /// </summary>
-        private void DeleteFileWithConfirmation(string fileName)
-        {
-            var result = MessageBox.Show($"Удалить файл {fileName}?",
-                "Подтверждение", MessageBoxButton.YesNo);
-
-            if (result == MessageBoxResult.Yes)
+            try
             {
-                _appFiles.RemoveAll(f => f.Name == fileName);
-                UpdateFilesTree();
-                fileContentTextBox.Text = string.Empty;
+                var selectedNode = filesTreeView.SelectedItem as FileNode;
+                if (selectedNode == null || selectedNode.IsDirectory) return;
+
+                DeleteFileWithConfirmation(selectedNode.Name);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка при удалении файла: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Показать сообщение об ошибке
-        /// </summary>
+        private void DeleteFileWithConfirmation(string fileName)
+        {
+            try
+            {
+                var result = MessageBox.Show($"Удалить файл {fileName}?",
+                    "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    _appFiles.RemoveAll(f => f.Name == fileName);
+                    UpdateFilesTree();
+                    fileContentTextBox.Text = string.Empty;
+                    ShowInformationMessage($"Файл {fileName} удален");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка удаления файла: {ex.Message}");
+            }
+        }
+
+        private void SaveArrayToFile(string filePath)
+        {
+            try
+            {
+                var content = string.Join(Environment.NewLine, _array.Select((item, index) =>
+                    $"{index}: {item ?? "null"}"));
+                File.WriteAllText(filePath, content);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ошибка сохранения массива: {ex.Message}", ex);
+            }
+        }
+
+        private void LoadArrayFromFile(string filePath)
+        {
+            try
+            {
+                var content = File.ReadAllText(filePath);
+                // Здесь должна быть логика парсинга файла и загрузки в массив
+                ShowInformationMessage("Функция загрузки массива из файла в разработке");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Ошибка загрузки массива: {ex.Message}", ex);
+            }
+        }
+
+        #endregion
+
+        #region Вспомогательные методы
+
         private void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        /// <summary>
-        /// Показать информационное сообщение
-        /// </summary>
         private void ShowInformationMessage(string message)
         {
             MessageBox.Show(message, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
         #endregion
     }
 
@@ -457,12 +705,13 @@ namespace WPFPracticeProject
     }
 
     /// <summary>
-    /// Класс файла приложения для хранения метаинформации и содержимого
+    /// Класс файла приложения
     /// </summary>
     public class AppFile
     {
         public string Name { get; set; }
         public string Content { get; set; }
+        public string FilePath { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }

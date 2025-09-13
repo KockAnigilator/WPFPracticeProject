@@ -5,28 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPracticeProject"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TabControl>
-            
+        Title="Мастер работы с массивами" Height="600" Width="900"
+        Background="#FFF0F8FF">
+
+    <DockPanel>
+        <!-- Меню приложения -->
+        <Menu DockPanel.Dock="Top" Background="#FFE6F3FF">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Сохранить" Click="OnMenuSaveClick" ToolTip="Сохранить данные в файл"/>
+                <MenuItem Header="Загрузить" Click="OnMenuLoadClick" ToolTip="Загрузить данные из файла"/>
+                <Separator/>
+                <MenuItem Header="Выход" Click="OnExitClick"/>
+            </MenuItem>
+            <MenuItem Header="Помощь">
+                <MenuItem Header="О программе" Click="OnAboutClick"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ToolBar с подсказками -->
+        <ToolBarTray DockPanel.Dock="Top" Background="#FFE1F5FE">
+            <ToolBar>
+                <TextBlock x:Name="toolbarTitle" Margin="10,5" FontWeight="Bold" 
+                          Text="Тип данных" ToolTip="Текущая активная вкладка"/>
+                <Button x:Name="helpButton" Content="?" Margin="10,0" Padding="8,2" 
+                       Click="OnHelpClick" ToolTip="Показать подсказку по текущей вкладке"/>
+                <Popup x:Name="helpPopup" PlacementTarget="{Binding ElementName=helpButton}" 
+                      StaysOpen="False" PopupAnimation="Slide">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" 
+                           Padding="10" CornerRadius="5">
+                        <TextBlock x:Name="helpText" TextWrapping="Wrap" Width="300"
+                                  Text="Выберите тип данных для работы с массивом"/>
+                    </Border>
+                </Popup>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Основной контейнер вкладок -->
+        <TabControl SelectionChanged="OnTabChanged">
+
+            <!-- Вкладка выбора типа данных -->
             <TabItem Header="Тип данных">
-                <GroupBox Header="Выбор типа данных" Margin="10">
-                    <StackPanel Orientation="Vertical">
-                    
-                        <RadioButton x:Name="intRadioButton" Content="Целочисленный (int)" GroupName="DataTypeGroup"/>
-                        <Slider x:Name="intSlider" Minimum="1" Maximum="100" IsEnabled="False" Margin="20,0,0,0" ToolTip="Выберите целочисленное значение"/>
-                    
-                        <RadioButton x:Name="floatRadioButton" Content="Дробный (float)" GroupName="DataTypeGroup"/>
-                    
-                        <RadioButton x:Name="dateRadioButton" Content="Дата" GroupName="DataTypeGroup"/>
-                        <DatePicker x:Name="DatePickerControl" IsEnabled="False" Margin="20,0,0,0" ToolTip="Выберите дату"/>
-                    
+                <GroupBox Header="Выбор типа данных массива" Margin="15" 
+                         Background="#FFFAFAFA" BorderBrush="#FF0078D7">
+                    <StackPanel Orientation="Vertical" Margin="10">
+                        <RadioButton x:Name="intRadioButton" Content="Целочисленный (int)" 
+                                    GroupName="DataTypeGroup" FontSize="14"/>
+                        <RadioButton x:Name="floatRadioButton" Content="Дробный (float)" 
+                                    GroupName="DataTypeGroup" FontSize="14"/>
+                        <RadioButton x:Name="dateRadioButton" Content="Дата" 
+                                    GroupName="DataTypeGroup" FontSize="14"/>
                     </StackPanel>
                 </GroupBox>
             </TabItem>
 
+            <!-- Вкладка работы с массивом -->
             <TabItem Header="Массив">
-                <Grid Margin="10">
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -35,39 +69,51 @@
                     </Grid.RowDefinitions>
 
                     <!-- Размер массива -->
-                    <GroupBox Header="Размер массива" Grid.Row="0">
-                        <StackPanel Orientation="Horizontal">
-                            <Slider x:Name="arraySizeSlider" Minimum="1" Maximum="10" Width="200"/>
-                            <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center"/>
+                    <GroupBox Header="Размер массива" Grid.Row="0" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7">
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <TextBlock Text="Размер:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Slider x:Name="arraySizeSlider" Minimum="1" Maximum="20" Width="200"
+                                   ToolTip="Выберите размер массива от 1 до 20 элементов"/>
+                            <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center"
+                                      FontWeight="Bold" Foreground="Blue"/>
                         </StackPanel>
                     </GroupBox>
 
                     <!-- Ввод элементов -->
-                    <GroupBox Header="Ввод элементов" Grid.Row="1">
-                        <ItemsControl x:Name="arrayInputItems">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                                        <TextBlock Text="Элемент [" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding Index}"/>
-                                        <TextBlock Text="]: " Margin="5,0"/>
-                                        <TextBox Width="100" TextChanged="ArrayElement_TextChanged"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                    <GroupBox Header="Ввод элементов массива" Grid.Row="1" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7" Margin="0,10">
+                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="arrayInputItems" Margin="10">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Элемент [" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Index}" FontWeight="Bold" 
+                                                      Margin="5,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="]: " VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                            <TextBox Width="120" TextChanged="OnArrayElementTextChanged"
+                                                    Margin="5,0" VerticalContentAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
                     </GroupBox>
 
                     <!-- Отображение массива -->
-                    <GroupBox Header="Массив" Grid.Row="2">
+                    <GroupBox Header="Текущий массив" Grid.Row="2" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7" Margin="0,10">
                         <TextBox x:Name="arrayDisplay" Height="100" IsReadOnly="True" 
-                                VerticalScrollBarVisibility="Auto"/>
+                                VerticalScrollBarVisibility="Auto" Margin="10"
+                                FontFamily="Consolas" Background="#FFF5F5F5"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
+            <!-- Вкладка сортировок -->
             <TabItem Header="Сортировки" x:Name="sortTab" IsEnabled="False">
-                <Grid Margin="10">
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -75,29 +121,37 @@
                     </Grid.RowDefinitions>
 
                     <!-- Выбор сортировки -->
-                    <GroupBox Header="Выбор сортировки" Grid.Row="0">
-                        <StackPanel>
-                            <RadioButton x:Name="bubbleSortRadio" Content="Пузырьковая сортировка" GroupName="SortGroup" Margin="5"/>
-                            <RadioButton x:Name="selectionSortRadio" Content="Сортировка выбором" GroupName="SortGroup" Margin="5"/>
-                            <RadioButton x:Name="quickSortRadio" Content="Быстрая сортировка" GroupName="SortGroup" Margin="5"/>
+                    <GroupBox Header="Выбор алгоритма сортировки" Grid.Row="0" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7">
+                        <StackPanel Margin="10">
+                            <RadioButton x:Name="bubbleSortRadio" Content="Пузырьковая сортировка" 
+                                        GroupName="SortGroup" Margin="5"/>
+                            <RadioButton x:Name="selectionSortRadio" Content="Сортировка выбором" 
+                                        GroupName="SortGroup" Margin="5"/>
+                            <RadioButton x:Name="quickSortRadio" Content="Быстрая сортировка" 
+                                        GroupName="SortGroup" Margin="5"/>
                         </StackPanel>
                     </GroupBox>
 
                     <!-- Кнопка сортировки -->
                     <Button x:Name="sortButton" Content="Выполнить сортировку" Grid.Row="1" 
-                Margin="0,10" Padding="10,5" HorizontalAlignment="Left"
-                Click="SortButton_Click"/>
+                           Margin="0,15" Padding="15,5" HorizontalAlignment="Left"
+                           Click="OnSortButtonClick" Background="#FF0078D7" Foreground="White"
+                           FontWeight="Bold"/>
 
                     <!-- Результат сортировки -->
-                    <GroupBox Header="Результат сортировки" Grid.Row="2">
+                    <GroupBox Header="Результат сортировки" Grid.Row="2" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7" Margin="0,10">
                         <TextBox x:Name="sortedArrayDisplay" IsReadOnly="True" 
-                    VerticalScrollBarVisibility="Auto"/>
+                                VerticalScrollBarVisibility="Auto" Margin="10"
+                                FontFamily="Consolas" Background="#FFF5F5F5" Height="150"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
+            <!-- Вкладка работы с файлами -->
             <TabItem Header="Файлы">
-                <Grid Margin="10">
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -107,37 +161,47 @@
                     <!-- Панель управления -->
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
                         <Button x:Name="addFileButton" Content="Добавить файл" Margin="0,0,10,0" 
-                    Click="AddFileButton_Click"/>
-                        <Button x:Name="refreshTreeButton" Content="Обновить" 
-                    Click="RefreshTreeButton_Click"/>
+                               Click="OnAddFileButtonClick" Padding="10,5" Background="#FF28A745" 
+                               Foreground="White" FontWeight="Bold"/>
+                        <Button x:Name="refreshTreeButton" Content="Обновить дерево" 
+                               Click="OnRefreshTreeButtonClick" Padding="10,5"/>
                     </StackPanel>
 
                     <!-- Дерево файлов -->
-                    <GroupBox Header="Дерево файлов" Grid.Row="1">
-                        <TreeView x:Name="filesTreeView">
+                    <GroupBox Header="Дерево файлов проекта" Grid.Row="1" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7">
+                        <TreeView x:Name="filesTreeView" Margin="5">
                             <TreeView.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Загрузить содержимое" Click="LoadFileContent_Click"/>
-                                    <MenuItem Header="Удалить файл" Click="DeleteFile_Click"/>
+                                    <MenuItem Header="Загрузить содержимое" Click="OnLoadFileContentClick"/>
+                                    <MenuItem Header="Удалить файл" Click="OnDeleteFileClick"/>
+                                    <Separator/>
+                                    <MenuItem Header="Сохранить в файл" Click="OnMenuSaveClick"/>
+                                    <MenuItem Header="Загрузить из файла" Click="OnMenuLoadClick"/>
                                 </ContextMenu>
                             </TreeView.ContextMenu>
-
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                    <TextBlock Text="{Binding Name}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/file.png" Width="16" Height="16" 
+                                              Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
                         </TreeView>
                     </GroupBox>
 
                     <!-- Содержимое файла -->
-                    <GroupBox Header="Содержимое файла" Grid.Row="2">
+                    <GroupBox Header="Содержимое файла" Grid.Row="2" 
+                             Background="#FFFAFAFA" BorderBrush="#FF0078D7" Margin="0,10">
                         <TextBox x:Name="fileContentTextBox" IsReadOnly="True" 
-                    VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+                                VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                Margin="5" FontFamily="Consolas" Background="#FFF5F5F5"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
         </TabControl>
-    </Grid>
+    </DockPanel>
 </Window>

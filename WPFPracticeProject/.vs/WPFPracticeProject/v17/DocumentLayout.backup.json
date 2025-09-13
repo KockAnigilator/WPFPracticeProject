@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeToolTip": "WPFPracticeProject\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAcwBAAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAKkCAAAAAAAAAAAcwLsCAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-08T10:36:25.93Z",
               "EditorCaption": ""
