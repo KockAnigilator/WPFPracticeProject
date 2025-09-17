@@ -4,10 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 
 namespace WPFPracticeProject
 {
+    /// <summary>
+    /// Главное окно приложения "Мастер работы с массивами".
+    /// Реализует функциональность: выбор типа данных, ввод массива, сортировку и управление файлами.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private object[] _array;
@@ -15,6 +18,10 @@ namespace WPFPracticeProject
         private readonly List<AppFile> _appFiles = new List<AppFile>();
         private Type _currentDataType = typeof(int);
 
+        /// <summary>
+        /// Конструктор главного окна.
+        /// Инициализирует компоненты, подписывается на события и настраивает начальное состояние.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -23,70 +30,57 @@ namespace WPFPracticeProject
         }
 
         /// <summary>
-        /// Инициализация приложения
+        /// Инициализирует начальные значения элементов управления.
+        /// Устанавливает размер массива по умолчанию и выбирает целочисленный тип.
         /// </summary>
         private void InitializeApplication()
         {
-            try
-            {
-                // Устанавливаем обработчики и начальные значения
-                arraySizeSlider.Value = 5;
-                intRadioButton.IsChecked = true;
-                UpdateHelpText("Выберите тип данных для работы с массивом");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка инициализации приложения: {ex.Message}");
-            }
+            arraySizeSlider.Value = 5;
+            intRadioButton.IsChecked = true;
+            UpdateHelpText("Выберите тип данных для работы с массивом");
         }
 
         /// <summary>
-        /// Подписка на события элементов управления
+        /// Подписывает обработчики событий на элементы интерфейса.
+        /// Обеспечивает реакцию на изменения выбора типа данных, размера массива и других действий.
         /// </summary>
         private void SubscribeToEvents()
         {
-            try
-            {
-                intRadioButton.Checked += OnIntRadioButtonChecked;
-                floatRadioButton.Checked += OnFloatRadioButtonChecked;
-                dateRadioButton.Checked += OnDateRadioButtonChecked;
-                arraySizeSlider.ValueChanged += OnArraySizeSliderValueChanged;
+            intRadioButton.Checked += OnIntRadioButtonChecked;
+            floatRadioButton.Checked += OnFloatRadioButtonChecked;
+            dateRadioButton.Checked += OnDateRadioButtonChecked;
+            arraySizeSlider.ValueChanged += OnArraySizeSliderValueChanged;
 
-                arraySizeSlider.ValueChanged += (s, e) =>
-                {
-                    arraySizeText.Text = $"Размер: {(int)arraySizeSlider.Value}";
-                };
-            }
-            catch (Exception ex)
+            // Обновление текстового отображения размера массива
+            arraySizeSlider.ValueChanged += (s, e) =>
             {
-                ShowErrorMessage($"Ошибка подписки на события: {ex.Message}");
-            }
+                arraySizeText.Text = $"Размер: {(int)arraySizeSlider.Value}";
+            };
         }
 
-        #region Обработчики меню и тулбара
+        // =============================================================================================================
+        // === ОБРАБОТЧИКИ ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК И ПОДСКАЗКИ ========================================================
+        // =============================================================================================================
 
         /// <summary>
-        /// Обработчик изменения вкладки
+        /// Обработчик изменения выбранной вкладки.
+        /// Обновляет заголовок панели инструментов и текст подсказки.
         /// </summary>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Аргументы события изменения выбора</param>
         private void OnTabChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (e.Source is TabControl tab && tab.SelectedItem is TabItem item)
             {
-                if (e.Source is TabControl tabControl && tabControl.SelectedItem is TabItem selectedTab)
-                {
-                    toolbarTitle.Text = selectedTab.Header.ToString();
-                    UpdateHelpTextBasedOnTab(selectedTab.Header.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка при переключении вкладки: {ex.Message}");
+                toolbarTitle.Text = item.Header.ToString();
+                UpdateHelpTextBasedOnTab(item.Header.ToString());
             }
         }
 
         /// <summary>
-        /// Обновление текста подсказки в зависимости от вкладки
+        /// Обновляет текст подсказки в зависимости от активной вкладки.
         /// </summary>
+        /// <param name="tabName">Название текущей вкладки</param>
         private void UpdateHelpTextBasedOnTab(string tabName)
         {
             switch (tabName)
@@ -95,67 +89,62 @@ namespace WPFPracticeProject
                     UpdateHelpText("Выберите тип данных для работы с массивом");
                     break;
                 case "Массив":
-                    UpdateHelpText("Задайте размер массива и заполните элементы. Тип данных: " + _currentDataType.Name);
+                    UpdateHelpText($"Задайте размер и заполните массив ({_currentDataType.Name})");
                     break;
                 case "Сортировки":
-                    UpdateHelpText("Выберите алгоритм сортировки и нажмите кнопку выполнения");
+                    UpdateHelpText("Выберите алгоритм и нажмите 'Выполнить'");
                     break;
                 case "Файлы":
-                    UpdateHelpText("Управление файлами проекта. Используйте контекстное меню для действий с файлами");
+                    UpdateHelpText("Управление файлами через контекстное меню");
                     break;
             }
         }
 
         /// <summary>
-        /// Показать подсказку
+        /// Показывает всплывающую подсказку при нажатии кнопки помощи.
         /// </summary>
+        /// <param name="sender">Кнопка помощи</param>
+        /// <param name="e">Событие клика</param>
         private void OnHelpClick(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                helpPopup.IsOpen = true;
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка отображения подсказки: {ex.Message}");
-            }
+            helpPopup.IsOpen = true;
         }
 
         /// <summary>
-        /// Обновление текста подсказки
+        /// Обновляет текст подсказки.
         /// </summary>
+        /// <param name="text">Новый текст подсказки</param>
         private void UpdateHelpText(string text)
         {
             helpText.Text = text;
         }
 
+        // =============================================================================================================
+        // === МЕНЮ И СТАНДАРТНЫЕ КОМАНДЫ ============================================================================
+        // =============================================================================================================
+
         /// <summary>
-        /// Сохранение через меню
+        /// Обработчик команды "Сохранить" из меню.
+        /// Открывает диалог сохранения и записывает массив в файл.
         /// </summary>
+        /// <param name="sender">Элемент меню</param>
+        /// <param name="e">Событие клика</param>
         private void OnMenuSaveClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                var dialog = new SaveFileDialog
+                var dialog = new Microsoft.Win32.SaveFileDialog
                 {
                     Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-                    Title = "Сохранить данные массива"
+                    Title = "Сохранить массив"
                 };
 
                 if (dialog.ShowDialog() == true)
                 {
                     SaveArrayToFile(dialog.FileName);
                     AddFileToTree(dialog.FileName);
-                    ShowInformationMessage($"Файл успешно сохранен: {Path.GetFileName(dialog.FileName)}");
+                    ShowInformationMessage($"Файл сохранён: {Path.GetFileName(dialog.FileName)}");
                 }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                ShowErrorMessage("Нет прав для сохранения файла в выбранной директории");
-            }
-            catch (IOException ioEx)
-            {
-                ShowErrorMessage($"Ошибка ввода-вывода: {ioEx.Message}");
             }
             catch (Exception ex)
             {
@@ -164,274 +153,247 @@ namespace WPFPracticeProject
         }
 
         /// <summary>
-        /// Загрузка через меню
+        /// Обработчик команды "Загрузить" из меню.
+        /// Заглушка — в данной версии не реализована.
         /// </summary>
+        /// <param name="sender">Элемент меню</param>
+        /// <param name="e">Событие клика</param>
         private void OnMenuLoadClick(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var dialog = new OpenFileDialog
-                {
-                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-                    Title = "Загрузить данные массива"
-                };
-
-                if (dialog.ShowDialog() == true)
-                {
-                    LoadArrayFromFile(dialog.FileName);
-                    AddFileToTree(dialog.FileName);
-                    ShowInformationMessage($"Файл успешно загружен: {Path.GetFileName(dialog.FileName)}");
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                ShowErrorMessage("Файл не найден");
-            }
-            catch (IOException ioEx)
-            {
-                ShowErrorMessage($"Ошибка чтения файла: {ioEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка загрузки: {ex.Message}");
-            }
+            ShowInformationMessage("Загрузка из файла — заглушка. Реализуется позже.");
         }
 
-        private void OnExitClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        /// <summary>
+        /// Закрывает приложение.
+        /// </summary>
+        /// <param name="sender">Пункт меню "Выход"</param>
+        /// <param name="e">Событие клика</param>
+        private void OnExitClick(object sender, RoutedEventArgs e) => Close();
 
+        /// <summary>
+        /// Показывает информацию о программе.
+        /// </summary>
+        /// <param name="sender">Пункт меню "О программе"</param>
+        /// <param name="e">Событие клика</param>
         private void OnAboutClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Мастер работы с массивами\nВерсия 1.0", "О программе");
+            MessageBox.Show("Мастер работы с массивами\nЛабораторная работа №1\nv1.0", "О программе");
         }
 
-        #endregion
+        // =============================================================================================================
+        // === ВЫБОР ТИПА ДАННЫХ ======================================================================================
+        // =============================================================================================================
 
-        #region Типы данных
-
+        /// <summary>
+        /// Обработчик выбора целочисленного типа данных (int).
+        /// Обновляет текущий тип и подсказку.
+        /// </summary>
+        /// <param name="sender">RadioButton для int</param>
+        /// <param name="e">Событие выбора</param>
         private void OnIntRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(int);
-            UpdateHelpText("Выбран целочисленный тип данных (int)");
+            UpdateHelpText("Выбран тип: int");
         }
 
+        /// <summary>
+        /// Обработчик выбора дробного типа данных (float).
+        /// Обновляет текущий тип и подсказку.
+        /// </summary>
+        /// <param name="sender">RadioButton для float</param>
+        /// <param name="e">Событие выбора</param>
         private void OnFloatRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(float);
-            UpdateHelpText("Выбран дробный тип данных (float)");
+            UpdateHelpText("Выбран тип: float");
         }
 
+        /// <summary>
+        /// Обработчик выбора типа данных "Дата" (DateTime).
+        /// Обновляет текущий тип и подсказку.
+        /// </summary>
+        /// <param name="sender">RadioButton для DateTime</param>
+        /// <param name="e">Событие выбора</param>
         private void OnDateRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(DateTime);
-            UpdateHelpText("Выбран тип данных Дата");
+            UpdateHelpText("Выбран тип: DateTime");
         }
 
-        #endregion
+        // =============================================================================================================
+        // === РАБОТА С МАССИВОМ ======================================================================================
+        // =============================================================================================================
 
-        #region Работа с массивами
-
+        /// <summary>
+        /// Обработчик изменения размера массива через слайдер.
+        /// Создаёт новый массив и обновляет интерфейс ввода.
+        /// </summary>
+        /// <param name="sender">Слайдер размера массива</param>
+        /// <param name="e">Событие изменения значения</param>
         private void OnArraySizeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            try
+            int size = (int)arraySizeSlider.Value;
+            _array = new object[size];
+            arrayInputItems.Items.Clear();
+            for (int i = 0; i < size; i++)
             {
-                int size = (int)arraySizeSlider.Value;
-                _array = new object[size];
-
-                arrayInputItems.Items.Clear();
-                for (int i = 0; i < size; i++)
-                {
-                    arrayInputItems.Items.Add(new { Index = i });
-                }
-
-                UpdateArrayDisplay();
+                arrayInputItems.Items.Add(new { Index = i });
             }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка изменения размера массива: {ex.Message}");
-            }
+            UpdateArrayDisplay();
         }
 
+        /// <summary>
+        /// Обработчик ввода значения в поле элемента массива.
+        /// Парсит значение в соответствии с выбранным типом данных.
+        /// </summary>
+        /// <param name="sender">TextBox поля ввода</param>
+        /// <param name="e">Событие изменения текста</param>
         private void OnArrayElementTextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                var textBox = (TextBox)sender;
-                var stackPanel = (StackPanel)textBox.Parent;
-                var indexText = (TextBlock)stackPanel.Children[1];
-                int index = int.Parse(indexText.Text);
+            var textBox = (TextBox)sender;
+            var stackPanel = (StackPanel)textBox.Parent;
+            var indexText = (TextBlock)stackPanel.Children[1];
+            int index = int.Parse(indexText.Text);
 
-                UpdateArrayElementValue(textBox.Text, index);
-                CheckFirstElementAddition();
-                CheckArrayCompletion();
-                UpdateArrayDisplay();
-            }
-            catch (FormatException)
-            {
-                ShowErrorMessage("Неверный формат данных. Проверьте ввод.");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка обработки ввода: {ex.Message}");
-            }
-        }
-
-        private void UpdateArrayElementValue(string text, int index)
-        {
-            if (string.IsNullOrWhiteSpace(text))
+            string text = textBox.Text.Trim();
+            if (string.IsNullOrEmpty(text))
             {
                 _array[index] = null;
-                return;
             }
-
-            try
+            else if (_currentDataType == typeof(int) && int.TryParse(text, out int intValue))
             {
-                if (_currentDataType == typeof(int) && int.TryParse(text, out int intValue))
-                {
-                    _array[index] = intValue;
-                }
-                else if (_currentDataType == typeof(float) && float.TryParse(text, out float floatValue))
-                {
-                    _array[index] = floatValue;
-                }
-                else if (_currentDataType == typeof(DateTime) && DateTime.TryParse(text, out DateTime dateValue))
-                {
-                    _array[index] = dateValue;
-                }
-                else
-                {
-                    throw new FormatException("Неверный формат данных для выбранного типа");
-                }
+                _array[index] = intValue;
             }
-            catch (FormatException ex)
+            else if (_currentDataType == typeof(float) && float.TryParse(text, out float floatValue))
             {
-                ShowErrorMessage($"Ошибка формата: {ex.Message}");
+                _array[index] = floatValue;
+            }
+            else if (_currentDataType == typeof(DateTime) && DateTime.TryParse(text, out DateTime dateValue))
+            {
+                _array[index] = dateValue;
+            }
+            else
+            {
                 _array[index] = null;
             }
+
+            CheckFirstElementAddition();
+            CheckArrayCompletion();
+            UpdateArrayDisplay();
         }
 
+        /// <summary>
+        /// Проверяет, был ли добавлен первый элемент массива.
+        /// Используется для логики перехода между этапами.
+        /// </summary>
         private void CheckFirstElementAddition()
         {
-            if (!_isFirstElementAdded && _array.Any(item => item != null))
-            {
+            if (!_isFirstElementAdded && _array.Any(x => x != null))
                 _isFirstElementAdded = true;
-            }
         }
 
+        /// <summary>
+        /// Обновляет текстовое отображение текущего состояния массива.
+        /// </summary>
         private void UpdateArrayDisplay()
         {
-            try
-            {
-                if (_array == null) return;
-
-                arrayDisplay.Text = string.Join(Environment.NewLine,
-                    _array.Select((item, index) => $"array[{index}] = {item ?? "null"}"));
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка отображения массива: {ex.Message}");
-            }
+            arrayDisplay.Text = string.Join(Environment.NewLine,
+                _array.Select((item, i) => $"array[{i}] = {item ?? "null"}"));
         }
 
+        /// <summary>
+        /// Проверяет, заполнен ли массив полностью.
+        /// Если да — активирует вкладку сортировки.
+        /// </summary>
         private void CheckArrayCompletion()
         {
-            try
-            {
-                bool isArrayFull = _array != null && _array.All(item => item != null);
-                sortTab.IsEnabled = isArrayFull;
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка проверки заполнения массива: {ex.Message}");
-            }
+            sortTab.IsEnabled = _array.All(item => item != null);
         }
 
-        #endregion
+        // =============================================================================================================
+        // === АЛГОРИТМЫ СОРТИРОВКИ ===================================================================================
+        // =============================================================================================================
 
-        #region Сортировки
-
+        /// <summary>
+        /// Обработчик кнопки "Выполнить сортировку".
+        /// Клонирует массив, применяет выбранный алгоритм и отображает результат.
+        /// </summary>
+        /// <param name="sender">Кнопка сортировки</param>
+        /// <param name="e">Событие клика</param>
         private void OnSortButtonClick(object sender, RoutedEventArgs e)
         {
             if (_array == null || _array.Length == 0) return;
 
-            try
-            {
-                object[] sortedArray = (object[])_array.Clone();
-                PerformSorting(sortedArray);
-                DisplaySortedArray(sortedArray);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ShowErrorMessage($"Ошибка сортировки: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Неожиданная ошибка при сортировке: {ex.Message}");
-            }
-        }
-
-        private void PerformSorting(object[] arrayToSort)
-        {
+            object[] result = (object[])_array.Clone();
             if (bubbleSortRadio.IsChecked == true)
-            {
-                BubbleSort(arrayToSort);
-            }
+                BubbleSort(result);
             else if (selectionSortRadio.IsChecked == true)
-            {
-                SelectionSort(arrayToSort);
-            }
+                SelectionSort(result);
             else if (quickSortRadio.IsChecked == true)
-            {
-                QuickSort(arrayToSort, 0, arrayToSort.Length - 1);
-            }
-            else
-            {
-                throw new InvalidOperationException("Не выбран алгоритм сортировки");
-            }
-        }
+                QuickSort(result, 0, result.Length - 1);
 
-        private void DisplaySortedArray(object[] sortedArray)
-        {
             sortedArrayDisplay.Text = string.Join(Environment.NewLine,
-                sortedArray.Select((item, index) => $"sorted[{index}] = {item}"));
+                result.Select((item, i) => $"sorted[{i}] = {item}"));
         }
 
+        /// <summary>
+        /// Выполняет пузырьковую сортировку массива.
+        /// </summary>
+        /// <param name="arr">Массив для сортировки</param>
+        private void BubbleSort(object[] arr)
+        {
+            for (int i = 0; i < arr.Length - 1; i++)
+                for (int j = 0; j < arr.Length - 1 - i; j++)
+                    if (Compare(arr[j], arr[j + 1]) > 0)
+                        Swap(arr, j, j + 1);
+        }
+
+        /// <summary>
+        /// Выполняет сортировку выбором.
+        /// </summary>
+        /// <param name="arr">Массив для сортировки</param>
         private void SelectionSort(object[] arr)
         {
             for (int i = 0; i < arr.Length - 1; i++)
             {
-                int minIndex = i;
+                int min = i;
                 for (int j = i + 1; j < arr.Length; j++)
-                {
-                    if (CompareObjects(arr[j], arr[minIndex]) < 0)
-                    {
-                        minIndex = j;
-                    }
-                }
-                Swap(arr, i, minIndex);
+                    if (Compare(arr[j], arr[min]) < 0)
+                        min = j;
+                Swap(arr, i, min);
             }
         }
 
+        /// <summary>
+        /// Выполняет быструю сортировку (QuickSort) рекурсивно.
+        /// </summary>
+        /// <param name="arr">Массив</param>
+        /// <param name="left">Левая граница</param>
+        /// <param name="right">Правая граница</param>
         private void QuickSort(object[] arr, int left, int right)
         {
             if (left < right)
             {
-                int pivotIndex = Partition(arr, left, right);
-                QuickSort(arr, left, pivotIndex - 1);
-                QuickSort(arr, pivotIndex + 1, right);
+                int pivot = Partition(arr, left, right);
+                QuickSort(arr, left, pivot - 1);
+                QuickSort(arr, pivot + 1, right);
             }
         }
 
+        /// <summary>
+        /// Разделяет массив на части относительно опорного элемента.
+        /// </summary>
+        /// <param name="arr">Массив</param>
+        /// <param name="left">Левая граница</param>
+        /// <param name="right">Правая граница</param>
+        /// <returns>Индекс опорного элемента</returns>
         private int Partition(object[] arr, int left, int right)
         {
-            object pivot = arr[right];
+            object p = arr[right];
             int i = left - 1;
-
             for (int j = left; j < right; j++)
             {
-                if (CompareObjects(arr[j], pivot) <= 0)
+                if (Compare(arr[j], p) <= 0)
                 {
                     i++;
                     Swap(arr, i, j);
@@ -441,277 +403,219 @@ namespace WPFPracticeProject
             return i + 1;
         }
 
-        private void BubbleSort(object[] arr)
+        /// <summary>
+        /// Сравнивает два объекта, реализующих IComparable.
+        /// Учитывает null-значения.
+        /// </summary>
+        /// <param name="a">Первый объект</param>
+        /// <param name="b">Второй объект</param>
+        /// <returns>-1, 0 или 1</returns>
+        private int Compare(object a, object b)
         {
-            for (int i = 0; i < arr.Length - 1; i++)
-            {
-                for (int j = 0; j < arr.Length - 1 - i; j++)
-                {
-                    if (CompareObjects(arr[j], arr[j + 1]) > 0)
-                    {
-                        Swap(arr, j, j + 1);
-                    }
-                }
-            }
-        }
-
-        private void Swap(object[] arr, int index1, int index2)
-        {
-            (arr[index1], arr[index2]) = (arr[index2], arr[index1]);
-        }
-
-        private int CompareObjects(object a, object b)
-        {
-            if (a == null && b == null) return 0;
-            if (a == null) return -1;
+            if (a == null) return b == null ? 0 : -1;
             if (b == null) return 1;
-
             return ((IComparable)a).CompareTo(b);
         }
 
-        #endregion
+        /// <summary>
+        /// Меняет местами два элемента массива.
+        /// </summary>
+        /// <param name="arr">Массив</param>
+        /// <param name="i">Индекс первого элемента</param>
+        /// <param name="j">Индекс второго элемента</param>
+        private void Swap(object[] arr, int i, int j)
+        {
+            (arr[i], arr[j]) = (arr[j], arr[i]);
+        }
 
-        #region Работа с файлами
+        // =============================================================================================================
+        // === РАБОТА С ФАЙЛАМИ =======================================================================================
+        // =============================================================================================================
 
+        /// <summary>
+        /// Обработчик кнопки "Добавить файл".
+        /// Открывает диалог создания нового файла и добавляет его в список.
+        /// </summary>
+        /// <param name="sender">Кнопка добавления</param>
+        /// <param name="e">Событие клика</param>
         private void OnAddFileButtonClick(object sender, RoutedEventArgs e)
         {
-            try
+            var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                var dialog = new SaveFileDialog
+                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var file = new AppFile
                 {
-                    Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-                    Title = "Создать новый файл"
+                    Name = Path.GetFileName(dialog.FileName),
+                    Content = "Пример содержимого...",
+                    FilePath = dialog.FileName
                 };
-
-                if (dialog.ShowDialog() == true)
-                {
-                    AddNewFile(dialog.FileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка при создании файла: {ex.Message}");
-            }
-        }
-
-        private void AddNewFile(string filePath)
-        {
-            try
-            {
-                var newFile = new AppFile
-                {
-                    Name = Path.GetFileName(filePath),
-                    Content = "Содержимое файла будет здесь...",
-                    FilePath = filePath
-                };
-
-                _appFiles.Add(newFile);
+                _appFiles.Add(file);
                 UpdateFilesTree();
-                ShowInformationMessage($"Файл добавлен: {newFile.Name}");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка добавления файла: {ex.Message}");
             }
         }
 
-        private void AddFileToTree(string filePath)
-        {
-            try
-            {
-                var fileName = Path.GetFileName(filePath);
-                if (!_appFiles.Any(f => f.Name == fileName))
-                {
-                    var newFile = new AppFile
-                    {
-                        Name = fileName,
-                        Content = File.ReadAllText(filePath),
-                        FilePath = filePath
-                    };
-                    _appFiles.Add(newFile);
-                    UpdateFilesTree();
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка добавления файла в дерево: {ex.Message}");
-            }
-        }
-
-        private void UpdateFilesTree()
-        {
-            try
-            {
-                filesTreeView.Items.Clear();
-
-                var rootNode = new FileNode
-                {
-                    Name = "Файлы проекта",
-                    IsDirectory = true
-                };
-
-                foreach (var file in _appFiles)
-                {
-                    rootNode.Children.Add(new FileNode
-                    {
-                        Name = file.Name,
-                        Path = file.FilePath,
-                        IsDirectory = false
-                    });
-                }
-
-                filesTreeView.Items.Add(rootNode);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка обновления дерева файлов: {ex.Message}");
-            }
-        }
-
-        private void OnLoadFileContentClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var selectedNode = filesTreeView.SelectedItem as FileNode;
-                if (selectedNode == null || selectedNode.IsDirectory) return;
-
-                LoadFileContent(selectedNode.Name);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка при загрузке содержимого: {ex.Message}");
-            }
-        }
-
-        private void LoadFileContent(string fileName)
-        {
-            try
-            {
-                var file = _appFiles.FirstOrDefault(f => f.Name == fileName);
-                if (file != null)
-                {
-                    fileContentTextBox.Text = file.Content;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка загрузки содержимого файла: {ex.Message}");
-            }
-        }
-
+        /// <summary>
+        /// Обработчик кнопки "Обновить дерево".
+        /// Перестраивает дерево файлов на основе текущего списка.
+        /// </summary>
+        /// <param name="sender">Кнопка обновления</param>
+        /// <param name="e">Событие клика</param>
         private void OnRefreshTreeButtonClick(object sender, RoutedEventArgs e)
         {
-            try
+            UpdateFilesTree();
+        }
+
+        /// <summary>
+        /// Обработчик контекстного меню: загрузить содержимое файла.
+        /// Отображает содержимое выбранного файла в текстовом поле.
+        /// </summary>
+        /// <param name="sender">Элемент меню</param>
+        /// <param name="e">Событие клика</param>
+        private void OnLoadFileContentClick(object sender, RoutedEventArgs e)
+        {
+            if (filesTreeView.SelectedItem is FileNode node && !node.IsDirectory)
             {
-                UpdateFilesTree();
-                ShowInformationMessage("Дерево файлов обновлено");
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка при обновлении дерева: {ex.Message}");
+                var file = _appFiles.FirstOrDefault(f => f.Name == node.Name);
+                fileContentTextBox.Text = file?.Content ?? "Файл не найден";
             }
         }
 
+        /// <summary>
+        /// Обработчик удаления файла через контекстное меню.
+        /// Запрашивает подтверждение и удаляет файл из списка.
+        /// </summary>
+        /// <param name="sender">Элемент меню</param>
+        /// <param name="e">Событие клика</param>
         private void OnDeleteFileClick(object sender, RoutedEventArgs e)
         {
-            try
+            if (filesTreeView.SelectedItem is FileNode node && !node.IsDirectory)
             {
-                var selectedNode = filesTreeView.SelectedItem as FileNode;
-                if (selectedNode == null || selectedNode.IsDirectory) return;
-
-                DeleteFileWithConfirmation(selectedNode.Name);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка при удалении файла: {ex.Message}");
-            }
-        }
-
-        private void DeleteFileWithConfirmation(string fileName)
-        {
-            try
-            {
-                var result = MessageBox.Show($"Удалить файл {fileName}?",
-                    "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Удалить файл {node.Name}?", "Подтвердите", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    _appFiles.RemoveAll(f => f.Name == fileName);
+                    _appFiles.RemoveAll(f => f.Name == node.Name);
                     UpdateFilesTree();
-                    fileContentTextBox.Text = string.Empty;
-                    ShowInformationMessage($"Файл {fileName} удален");
+                    fileContentTextBox.Text = "";
                 }
             }
-            catch (Exception ex)
-            {
-                ShowErrorMessage($"Ошибка удаления файла: {ex.Message}");
-            }
         }
 
-        private void SaveArrayToFile(string filePath)
+        /// <summary>
+        /// Обновляет дерево файлов в TreeView.
+        /// Создаёт корневой узел и добавляет все файлы.
+        /// </summary>
+        private void UpdateFilesTree()
         {
-            try
+            filesTreeView.Items.Clear();
+            var root = new FileNode { Name = "Проект", IsDirectory = true };
+            foreach (var f in _appFiles)
             {
-                var content = string.Join(Environment.NewLine, _array.Select((item, index) =>
-                    $"{index}: {item ?? "null"}"));
-                File.WriteAllText(filePath, content);
+                root.Children.Add(new FileNode { Name = f.Name, Path = f.FilePath, IsDirectory = false });
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка сохранения массива: {ex.Message}", ex);
-            }
+            filesTreeView.Items.Add(root);
         }
 
-        private void LoadArrayFromFile(string filePath)
+        /// <summary>
+        /// Сохраняет текущий массив в указанный файл.
+        /// </summary>
+        /// <param name="path">Путь к файлу</param>
+        private void SaveArrayToFile(string path)
         {
-            try
-            {
-                var content = File.ReadAllText(filePath);
-                // Здесь должна быть логика парсинга файла и загрузки в массив
-                ShowInformationMessage("Функция загрузки массива из файла в разработке");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка загрузки массива: {ex.Message}", ex);
-            }
+            string content = string.Join(Environment.NewLine, _array.Select((x, i) => $"{i}: {x}"));
+            File.WriteAllText(path, content);
         }
 
-        #endregion
-
-        #region Вспомогательные методы
-
-        private void ShowErrorMessage(string message)
+        /// <summary>
+        /// Добавляет файл в дерево, если он ещё не добавлен.
+        /// </summary>
+        /// <param name="filePath">Путь к файлу</param>
+        private void AddFileToTree(string filePath)
         {
-            MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            string name = Path.GetFileName(filePath);
+            if (!_appFiles.Any(f => f.Name == name))
+            {
+                _appFiles.Add(new AppFile { Name = name, Content = "Новое содержимое", FilePath = filePath });
+                UpdateFilesTree();
+            }
         }
 
-        private void ShowInformationMessage(string message)
-        {
-            MessageBox.Show(message, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+        // =============================================================================================================
+        // === ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =================================================================================
+        // =============================================================================================================
 
-        #endregion
+        /// <summary>
+        /// Показывает сообщение об ошибке.
+        /// </summary>
+        /// <param name="msg">Текст ошибки</param>
+        private void ShowErrorMessage(string msg) =>
+            MessageBox.Show(msg, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        /// <summary>
+        /// Показывает информационное сообщение.
+        /// </summary>
+        /// <param name="msg">Текст сообщения</param>
+        private void ShowInformationMessage(string msg) =>
+            MessageBox.Show(msg, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
+    // =============================================================================================================
+    // === МОДЕЛИ ДАННЫХ ===========================================================================================
+    // =============================================================================================================
+
     /// <summary>
-    /// Класс узла дерева файлов
+    /// Представляет узел в древовидной структуре файлов.
+    /// Может быть директорией или файлом.
     /// </summary>
     public class FileNode
     {
+        /// <summary>
+        /// Название узла (файла или папки).
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Путь к файлу (если это файл).
+        /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// Признак того, что узел является директорией.
+        /// </summary>
         public bool IsDirectory { get; set; }
+
+        /// <summary>
+        /// Дочерние узлы (для директорий).
+        /// </summary>
         public List<FileNode> Children { get; set; } = new List<FileNode>();
     }
 
     /// <summary>
-    /// Класс файла приложения
+    /// Представляет файл внутри приложения.
+    /// Хранит имя, содержимое и метаданные.
     /// </summary>
     public class AppFile
     {
+        /// <summary>
+        /// Имя файла.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Содержимое файла.
+        /// </summary>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Полный путь к файлу на диске.
+        /// </summary>
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// Дата создания файла.
+        /// </summary>
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }
