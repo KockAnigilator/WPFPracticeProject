@@ -25,7 +25,7 @@
         <ToolBarTray DockPanel.Dock="Top" Background="#FFE1F5FE">
             <ToolBar>
                 <TextBlock x:Name="toolbarTitle" Margin="10,5" FontWeight="Bold" Text="Тип данных"/>
-                <Button Content="?" Margin="10,0" Padding="8,2" Click="OnHelpClick" ToolTip="Подсказка"/>
+                <Button x:Name="helpButton" Content="?" Margin="10,0" Padding="8,2" Click="OnHelpClick" ToolTip="Подсказка"/>
                 <Popup x:Name="helpPopup" PlacementTarget="{Binding ElementName=helpButton}" 
                        StaysOpen="False" PopupAnimation="Slide">
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1" 
@@ -64,7 +64,8 @@
                         <StackPanel Orientation="Horizontal" Margin="10">
                             <TextBlock Text="Размер:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <Slider x:Name="arraySizeSlider" Minimum="1" Maximum="20" Width="200"/>
-                            <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center" Foreground="Blue" FontWeight="Bold"/>
+                            <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center" 
+                          Foreground="Blue" FontWeight="Bold"/>
                         </StackPanel>
                     </GroupBox>
 
@@ -75,9 +76,17 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="0,5">
                                             <TextBlock Text="Элемент [" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Index}" FontWeight="Bold" Margin="5,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Index}" FontWeight="Bold" Margin="5,0" 
+                                          VerticalAlignment="Center"/>
                                             <TextBlock Text="]: " VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                            <TextBox Width="120" TextChanged="OnArrayElementTextChanged" VerticalContentAlignment="Center"/>
+
+                                            <!-- TextBox для int и float -->
+                                            <TextBox x:Name="textInput" Width="120" TextChanged="OnArrayElementTextChanged" 
+                                        VerticalContentAlignment="Center"/>
+
+                                            <!-- DatePicker для DateTime -->
+                                            <DatePicker x:Name="dateInput" Width="120" SelectedDateChanged="OnDatePickerSelectedDateChanged"
+                                           Visibility="Collapsed"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -87,7 +96,7 @@
 
                     <GroupBox Header="Текущий массив" Grid.Row="2" Background="#FFFAFAFA">
                         <TextBox x:Name="arrayDisplay" IsReadOnly="True" Height="100" Margin="10"
-                                 VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Background="#FFF5F5F5"/>
+                    VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Background="#FFF5F5F5"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -103,7 +112,7 @@
 
                     <GroupBox Header="Алгоритм сортировки" Grid.Row="0" Background="#FFFAFAFA" Margin="0,0,0,10">
                         <StackPanel Margin="10">
-                            <RadioButton x:Name="bubbleSortRadio" Content="Пузырьковая" GroupName="SortGroup"/>
+                            <RadioButton x:Name="bubbleSortRadio" Content="Пузырьковая" GroupName="SortGroup" IsChecked="True"/>
                             <RadioButton x:Name="selectionSortRadio" Content="Выбором" GroupName="SortGroup"/>
                             <RadioButton x:Name="quickSortRadio" Content="Быстрая" GroupName="SortGroup"/>
                         </StackPanel>
@@ -148,7 +157,6 @@
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                     <TextBlock Text="{Binding Name}"/>
-                                    <!-- Без картинки -->
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
                         </TreeView>
