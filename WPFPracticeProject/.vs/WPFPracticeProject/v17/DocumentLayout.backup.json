@@ -3,15 +3,43 @@
   "WorkspaceRootPath": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\gameui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|solutionrelative:gameui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\gameui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|solutionrelative:gameui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\gameui\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|solutionrelative:gameui\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\gamefield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\gamefield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\shape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\shape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\colortype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\colortype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\shapetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\shapetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\booltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\booltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\booltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -21,22 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|c:\\users\\dmitriy\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\gamelogic\\shape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\shape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\gamefield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\gamefield.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\colortype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\colortype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gamelogic\\shapetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{891D006E-85DE-4A07-A019-A9A87BC5836C}|GameLogic\\GameLogic.csproj|solutionrelative:gamelogic\\shapetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFPracticeProject.csproj|C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,11 +62,48 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\App.xaml",
+              "RelativeDocumentMoniker": "GameUI\\App.xaml",
+              "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\App.xaml",
+              "RelativeToolTip": "GameUI\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-14T09:45:56.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "GameUI\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\MainWindow.xaml",
+              "RelativeToolTip": "GameUI\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-14T09:36:58.609Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "GameUI\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\MainWindow.xaml.cs",
+              "RelativeToolTip": "GameUI\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T09:36:58.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "BoolToVisibilityConverter.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\BoolToVisibilityConverter.cs",
               "RelativeDocumentMoniker": "WPFPracticeProject\\BoolToVisibilityConverter.cs",
@@ -62,86 +111,87 @@
               "RelativeToolTip": "WPFPracticeProject\\BoolToVisibilityConverter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T19:14:26.106Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T19:14:26.106Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeToolTip": "WPFPracticeProject\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAASAAAAAAAAAA==",
+              "ViewState": "AgIAACwBAAAAAAAAAAAUwEkBAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T18:49:05.213Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 8,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml",
               "RelativeToolTip": "WPFPracticeProject\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-06T18:48:54.874Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T18:48:54.874Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "GameField.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\GameField.cs",
               "RelativeDocumentMoniker": "GameLogic\\GameField.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\GameField.cs",
               "RelativeToolTip": "GameLogic\\GameField.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAACsCAAAAAAAAAAAAwEECAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T15:47:16.942Z"
+              "WhenOpened": "2025-09-17T15:47:16.942Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Shape.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\Shape.cs",
               "RelativeDocumentMoniker": "GameLogic\\Shape.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\Shape.cs",
               "RelativeToolTip": "GameLogic\\Shape.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA1wBIAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwBEAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T15:43:54.192Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 5,
               "Title": "ColorType.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\ColorType.cs",
               "RelativeDocumentMoniker": "GameLogic\\ColorType.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\ColorType.cs",
               "RelativeToolTip": "GameLogic\\ColorType.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAcwCEAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAqwCgAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T15:40:43.278Z"
+              "WhenOpened": "2025-09-17T15:40:43.278Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 6,
               "Title": "ShapeType.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\ShapeType.cs",
               "RelativeDocumentMoniker": "GameLogic\\ShapeType.cs",
               "ToolTip": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameLogic\\ShapeType.cs",
               "RelativeToolTip": "GameLogic\\ShapeType.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAUwBsAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAwwBkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T15:37:18.403Z"
+              "WhenOpened": "2025-09-17T15:37:18.403Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml.cs",
@@ -153,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml",
@@ -164,7 +214,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Dmitriy\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml.cs",

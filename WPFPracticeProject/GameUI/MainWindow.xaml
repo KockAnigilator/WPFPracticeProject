@@ -1,0 +1,83 @@
+﻿<Window x:Class="GameUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Игра Фигуры" Height="800" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel Background="WhiteSmoke">
+        <!-- Панель управления -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" 
+                   Background="LightBlue" Height="60" Margin="5">
+            <Button x:Name="BackButton" Content="⏪ Назад" 
+                   Click="MoveBackward_Click" Margin="10" Padding="15,5"
+                   FontSize="14" FontWeight="Bold" Background="LightGray"/>
+            <Button x:Name="ForwardButton" Content="Вперед ⏩" 
+                   Click="MoveForward_Click" Margin="10" Padding="15,5"
+                   FontSize="14" FontWeight="Bold" Background="LightGreen"/>
+            <Button x:Name="ResetButton" Content="🔄 Новая игра" 
+                   Click="ResetGame_Click" Margin="10" Padding="15,5"
+                   FontSize="14" Background="LightYellow"/>
+
+            <Separator Margin="20,10" Width="2" Background="Gray"/>
+
+            <StackPanel Margin="10">
+                <TextBlock Text="Очки:" FontWeight="Bold" FontSize="12"/>
+                <TextBlock x:Name="ScoreText" Text="0" FontSize="16" 
+                          FontWeight="Bold" Foreground="DarkBlue"/>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+                <TextBlock Text="Ход:" FontWeight="Bold" FontSize="12"/>
+                <TextBlock x:Name="MoveCountText" Text="0" FontSize="16" 
+                          FontWeight="Bold" Foreground="DarkGreen"/>
+            </StackPanel>
+
+            <StackPanel Margin="10">
+                <TextBlock Text="Фигур:" FontWeight="Bold" FontSize="12"/>
+                <TextBlock x:Name="ShapesCountText" Text="0" FontSize="16" 
+                          FontWeight="Bold" Foreground="DarkRed"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Статус игры -->
+        <Border DockPanel.Dock="Bottom" Background="LightGray" 
+               Padding="10" Margin="5">
+            <TextBlock x:Name="StatusText" Text="Готов к игре!" 
+                      FontSize="14" TextWrapping="Wrap" 
+                      TextAlignment="Center" FontWeight="SemiBold"/>
+        </Border>
+
+        <!-- Игровое поле -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                     HorizontalScrollBarVisibility="Auto" 
+                     Margin="10">
+            <Border BorderBrush="Gray" BorderThickness="2" 
+                   Background="White" CornerRadius="5">
+                <Canvas x:Name="GameCanvas" Width="1280" Height="1280"
+                       Margin="10">
+                    <!-- Сетка для визуализации клеток -->
+                    <Canvas.Resources>
+                        <DrawingBrush x:Key="GridPattern" TileMode="Tile" 
+                                    Viewport="0,0,10,10" ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,10,10"/>
+                                    </GeometryDrawing.Geometry>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="LightGray" Thickness="0.2"/>
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.Resources>
+
+                    <!-- Устанавливаем фон с сеткой -->
+                    <Canvas.Background>
+                        <StaticResource ResourceKey="GridPattern"/>
+                    </Canvas.Background>
+                </Canvas>
+            </Border>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

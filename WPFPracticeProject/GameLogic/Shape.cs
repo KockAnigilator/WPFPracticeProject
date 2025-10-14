@@ -11,12 +11,36 @@ namespace GameLogic
     /// </summary>
     public class Shape
     {
-        public int Type { get; set; }
-        public int Color { get; set; }
+        public int type { get; set; }
+        public int color { get; set; }
         public int Age { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public Guid Id { get; private set; }
+
+
+        public int Type
+        {
+            get => type;
+            set
+            {
+                if (value < 0 || value > 2)
+                    throw new ArgumentException("Тип фигуры должен быть от 0 до 2");
+                type = value;
+            }
+        }
+
+        public int Color
+        {
+            get => color;
+            set
+            {
+                if (value < 0 || value > 2)
+                    throw new ArgumentException("Цвет должен быть от 0 до 2");
+                color = value;
+            }
+        }
+
 
         /// <summary>
         /// Создает новую фигуру

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace GameLogic
 {
@@ -90,11 +91,14 @@ namespace GameLogic
         /// <param name="shape">Добавляемая фигура</param>
         public void AddShape(Shape shape)
         {
-            if (IsValidPosition(shape.X, shape.Y))
-            {
-                field[shape.X, shape.Y].Add(shape);
-                GetCurrentState().Add(shape);
-            }
+            if (shape == null)
+                throw new ArgumentNullException(nameof(shape));
+
+            if (!IsValidPosition(shape.X, shape.Y))
+                throw new ArgumentException($"Неверная позиция: ({shape.X}, {shape.Y})");
+
+            field[shape.X, shape.Y].Add(shape);
+            GetCurrentState().Add(shape);
         }
 
         /// <summary>
@@ -552,12 +556,20 @@ namespace GameLogic
         /// Получает статус игры в виде строки
         /// </summary>
         /// <returns>Строка с информацией о статусе игры</returns>
-        public string GetGameStatus()
+        public string GetDetailedStatus()
         {
             var shapes = GetAllShapes();
-            string status = IsGameOver() ? "Игра окончена" : "Игра продолжается";
+            var status = IsGameOver() ? "Игра окончена" : "Игра продолжается";
+
+            var colorStats = shapes.GroupBy(s => s.Color)
+                                  .Select(g => $"{ColorType.GetName(g.Key)}: {g.Count()}");
+
+            var typeStats = shapes.GroupBy(s => s.Type)
+                                 .Select(g => $"{ShapeType.GetName(g.Key)}: {g.Count()}");
 
             return $"Ход: {MoveCount}, Очки: {Score}, Фигур: {shapes.Count()}\n" +
+                   $"Цвета: {string.Join(", ", colorStats)}\n" +
+                   $"Типы: {string.Join(", ", typeStats)}\n" +
                    $"Состояние: {status}";
         }
 
@@ -567,7 +579,7 @@ namespace GameLogic
         public void PrintFieldState()
         {
             Console.WriteLine("=== ТЕКУЩЕЕ СОСТОЯНИЕ ПОЛЯ ===");
-            Console.WriteLine(GetGameStatus());
+            Console.WriteLine(GetDetailedStatus());
 
             foreach (var shape in GetAllShapes().OrderBy(s => s.X).ThenBy(s => s.Y))
             {

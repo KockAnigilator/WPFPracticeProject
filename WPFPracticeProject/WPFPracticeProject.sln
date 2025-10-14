@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLogic", "GameLogic\Game
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab_1", "Lab_1", "{F25A435A-03BD-4819-8E07-2A236EC1B760}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameUI", "GameUI\GameUI.csproj", "{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{891D006E-85DE-4A07-A019-A9A87BC5836C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{891D006E-85DE-4A07-A019-A9A87BC5836C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{891D006E-85DE-4A07-A019-A9A87BC5836C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A} = {F25A435A-03BD-4819-8E07-2A236EC1B760}
 		{891D006E-85DE-4A07-A019-A9A87BC5836C} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{03CAF3FE-E3FD-4BF0-B76A-3250FE246991} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C432A42-8478-4D01-BAB5-8025C2F871C1}
