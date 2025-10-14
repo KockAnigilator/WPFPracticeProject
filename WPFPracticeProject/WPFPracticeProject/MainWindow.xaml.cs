@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -186,35 +189,51 @@ namespace WPFPracticeProject
 
         /// <summary>
         /// Обработчик выбора целочисленного типа данных
-        /// Устанавливает тип int и обновляет интерфейс ввода
         /// </summary>
         private void OnIntRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(int);
-            UpdateHelpText("Выбран тип: int");
-            UpdateInputControlsVisibility();
+            UpdateHelpText("Выбран тип: int (целые числа)");
+            UpdateInputHints();
         }
 
         /// <summary>
         /// Обработчик выбора дробного типа данных
-        /// Устанавливает тип float и обновляет интерфейс ввода
         /// </summary>
         private void OnFloatRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(float);
-            UpdateHelpText("Выбран тип: float");
-            UpdateInputControlsVisibility();
+            UpdateHelpText("Выбран тип: float (дробные числа)");
+            UpdateInputHints();
         }
 
         /// <summary>
         /// Обработчик выбора типа данных "Дата"
-        /// Устанавливает тип DateTime и переключает на DatePicker
         /// </summary>
         private void OnDateRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             _currentDataType = typeof(DateTime);
-            UpdateHelpText("Выбран тип: DateTime");
-            UpdateInputControlsVisibility();
+            UpdateHelpText("Выбран тип: DateTime (даты)");
+            UpdateInputHints();
+        }
+
+        /// <summary>
+        /// Обновляет подсказки для всех полей ввода
+        /// </summary>
+        private void UpdateInputHints()
+        {
+            try
+            {
+                string hint = GetInputHint();
+                foreach (var item in arrayInputItems.Items.OfType<ArrayElementModel>())
+                {
+                    item.InputHint = hint;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка обновления подсказок: {ex.Message}");
+            }
         }
 
         // =====================================================================
@@ -225,34 +244,126 @@ namespace WPFPracticeProject
         /// Обработчик изменения размера массива через слайдер
         /// Создает новый массив указанного размера и обновляет интерфейс ввода
         /// </summary>
+        // <summary>
+        /// Обработчик изменения размера массива через слайдер
+        /// </summary>
         private void OnArraySizeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int size = (int)arraySizeSlider.Value;
-            _array = new object[size];
-            arrayInputItems.Items.Clear();
-
-            // Создание элементов управления для ввода каждого элемента массива
-            for (int i = 0; i < size; i++)
+            try
             {
-                arrayInputItems.Items.Add(new ArrayElementModel { Index = i });
-            }
+                int size = (int)arraySizeSlider.Value;
+                _array = new object[size];
+                arrayInputItems.Items.Clear();
 
-            UpdateInputControlsVisibility();
-            UpdateArrayDisplay();
+                // Создание элементов управления для ввода каждого элемента массива
+                for (int i = 0; i < size; i++)
+                {
+                    arrayInputItems.Items.Add(new ArrayElementModel
+                    {
+                        Index = i,
+                        InputHint = GetInputHint()
+                    });
+                }
+
+                UpdateArrayDisplay();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Ошибка изменения размера массива: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Возвращает подсказку для ввода в зависимости от выбранного типа данных
+        /// </summary>
+        private string GetInputHint()
+        {
+            if (_currentDataType == typeof(int))
+                return "Введите целое число";
+            else if (_currentDataType == typeof(float))
+                return "Введите дробное число (можно с точкой или запятой)";
+            else if (_currentDataType == typeof(DateTime))
+                return "Введите дату в любом формате";
+            else
+                return "Введите значение";
         }
 
         /// <summary>
         /// Обработчик изменения текста в TextBox для элементов массива
-        /// Парсит введенное значение в соответствии с выбранным типом данных
+        /// </summary>
+        /// <summary>
+        /// Обработчик изменения текста в TextBox для элементов массива
         /// </summary>
         private void OnArrayElementTextChanged(object sender, TextChangedEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            var stackPanel = (StackPanel)textBox.Parent;
-            var indexText = (TextBlock)stackPanel.Children[1];
-            int index = int.Parse(indexText.Text);
+            try
+            {
+                var textBox = (TextBox)sender;
+                var stackPanel = (StackPanel)textBox.Parent;
+                var indexText = (TextBlock)stackPanel.Children[1];
+                int index = int.Parse(indexText.Text);
 
-            HandleArrayElementInput(index, textBox.Text);
+                // Просто вызываем обработчик без лишних проверок
+                HandleArrayElementInput(index, textBox.Text);
+            }
+            catch
+            { 
+
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает ввод данных для элемента массива
+        /// Выполняет парсинг строки в соответствии с текущим типом данных
+        /// </summary>
+        /// <param name="index">Индекс элемента массива</param>
+        /// <param name="text">Введенный текст</param>
+        private void HandleArrayElementInput(int index, string text)
+        {
+            string trimmedText = text.Trim();
+
+            if (string.IsNullOrEmpty(trimmedText))
+            {
+                _array[index] = null;
+            }
+            else
+            {
+                try
+                {
+                    if (_currentDataType == typeof(int))
+                    {
+                        if (int.TryParse(trimmedText, out int intValue))
+                            _array[index] = intValue;
+                        // Если не парсится - оставляем null, но не показываем ошибку
+                    }
+                    else if (_currentDataType == typeof(float))
+                    {
+                        // Заменяем точку на запятую для русской локали
+                        string normalizedText = trimmedText.Replace('.', ',');
+                        if (float.TryParse(normalizedText, out float floatValue))
+                            _array[index] = floatValue;
+                        // Если не парсится - оставляем null, но не показываем ошибку
+                    }
+                    else if (_currentDataType == typeof(DateTime))
+                    {
+                        // ПРОСТО ПРОБУЕМ ПАРСИТЬ БЕЗ ВСЯКИХ ПРОВЕРОК
+                        if (DateTime.TryParse(trimmedText, out DateTime dateValue))
+                        {
+                            _array[index] = dateValue;
+                        }
+                        // Если не получилось - просто оставляем null и НЕ ПОКАЗЫВАЕМ ОШИБКУ
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // ВСЕ ИСКЛЮЧЕНИЯ ИГНОРИРУЕМ - просто оставляем null
+                    _array[index] = null;
+                }
+            }
+
+            CheckFirstElementAddition();
+            CheckArrayCompletion();
+            UpdateArrayDisplay();
         }
 
         /// <summary>
@@ -273,69 +384,23 @@ namespace WPFPracticeProject
         }
 
         /// <summary>
-        /// Обрабатывает ввод данных для элемента массива
-        /// Выполняет парсинг строки в соответствии с текущим типом данных
+        /// Вспомогательный метод для поиска дочернего элемента в визуальном дереве
         /// </summary>
-        /// <param name="index">Индекс элемента массива</param>
-        /// <param name="text">Введенный текст</param>
-        private void HandleArrayElementInput(int index, string text)
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
-            string trimmedText = text.Trim();
+            if (parent == null) return null;
 
-            if (string.IsNullOrEmpty(trimmedText))
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
-                _array[index] = null;
-            }
-            else if (_currentDataType == typeof(int) && int.TryParse(trimmedText, out int intValue))
-            {
-                _array[index] = intValue;
-            }
-            else if (_currentDataType == typeof(float) && float.TryParse(trimmedText, out float floatValue))
-            {
-                _array[index] = floatValue;
-            }
-            else
-            {
-                _array[index] = null;
-            }
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T result)
+                    return result;
 
-            CheckFirstElementAddition();
-            CheckArrayCompletion();
-            UpdateArrayDisplay();
-        }
-
-        /// <summary>
-        /// Обновляет видимость элементов управления ввода в зависимости от типа данных
-        /// Для DateTime показывает DatePicker, для остальных типов - TextBox
-        /// </summary>
-        private void UpdateInputControlsVisibility()
-        {
-            foreach (var item in arrayInputItems.Items)
-            {
-                if (arrayInputItems.ItemContainerGenerator.ContainerFromItem(item) is ContentPresenter container)
-                {
-                    var stackPanel = VisualTreeHelper.GetChild(container, 0) as StackPanel;
-                    if (stackPanel != null)
-                    {
-                        var textInput = stackPanel.FindName("textInput") as TextBox;
-                        var dateInput = stackPanel.FindName("dateInput") as DatePicker;
-
-                        if (textInput != null && dateInput != null)
-                        {
-                            if (_currentDataType == typeof(DateTime))
-                            {
-                                textInput.Visibility = Visibility.Collapsed;
-                                dateInput.Visibility = Visibility.Visible;
-                            }
-                            else
-                            {
-                                textInput.Visibility = Visibility.Visible;
-                                dateInput.Visibility = Visibility.Collapsed;
-                            }
-                        }
-                    }
-                }
+                var descendant = FindVisualChild<T>(child);
+                if (descendant != null)
+                    return descendant;
             }
+            return null;
         }
 
         /// <summary>
@@ -627,12 +692,29 @@ namespace WPFPracticeProject
     /// Модель элемента массива для отображения в интерфейсе
     /// Содержит индекс элемента для привязки данных в XAML
     /// </summary>
-    public class ArrayElementModel
+    /// <summary>
+    /// Модель элемента массива для отображения в интерфейсе
+    /// </summary>
+    public class ArrayElementModel : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Индекс элемента в массиве (от 0 до n-1)
-        /// </summary>
         public int Index { get; set; }
+
+        private string _inputHint;
+        public string InputHint
+        {
+            get => _inputHint;
+            set
+            {
+                _inputHint = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>

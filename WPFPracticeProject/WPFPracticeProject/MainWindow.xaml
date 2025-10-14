@@ -80,13 +80,9 @@
                                           VerticalAlignment="Center"/>
                                             <TextBlock Text="]: " VerticalAlignment="Center" Margin="0,0,5,0"/>
 
-                                            <!-- TextBox для int и float -->
-                                            <TextBox x:Name="textInput" Width="120" TextChanged="OnArrayElementTextChanged" 
-                                        VerticalContentAlignment="Center"/>
-
-                                            <!-- DatePicker для DateTime -->
-                                            <DatePicker x:Name="dateInput" Width="120" SelectedDateChanged="OnDatePickerSelectedDateChanged"
-                                           Visibility="Collapsed"/>
+                                            <!-- Универсальный TextBox для всех типов данных -->
+                                            <TextBox x:Name="textInput" Width="150" TextChanged="OnArrayElementTextChanged" 
+                                        VerticalContentAlignment="Center" ToolTip="{Binding InputHint}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
