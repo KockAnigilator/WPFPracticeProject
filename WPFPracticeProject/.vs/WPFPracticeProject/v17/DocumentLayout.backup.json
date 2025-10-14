@@ -3,7 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|c:\\users\\\u0434\u043C\u0438\u0442\u0440\u0438\u0439\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -15,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{71BA3C8B-E0B2-4D9F-B8EA-785486C9491A}|WPFPracticeProject\\WPFLab_1.csproj|solutionrelative:wpfpracticeproject\\booltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|c:\\users\\\u0434\u043C\u0438\u0442\u0440\u0438\u0439\\documents\\github\\wpfpracticeproject\\wpfpracticeproject\\gameui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\gameui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{03CAF3FE-E3FD-4BF0-B76A-3250FE246991}|GameUI\\GameUI.csproj|solutionrelative:gameui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
@@ -73,8 +73,7 @@
               "ToolTip": "C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\App.xaml",
               "RelativeToolTip": "GameUI\\App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-14T09:45:56.974Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-14T09:45:56.974Z"
             },
             {
               "$type": "Document",
@@ -85,8 +84,7 @@
               "ToolTip": "C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\GameUI\\MainWindow.xaml",
               "RelativeToolTip": "GameUI\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-14T09:36:58.609Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-14T09:36:58.609Z"
             },
             {
               "$type": "Document",
@@ -110,8 +108,7 @@
               "RelativeToolTip": "WPFPracticeProject\\BoolToVisibilityConverter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T19:14:26.106Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T19:14:26.106Z"
             },
             {
               "$type": "Document",
@@ -121,7 +118,7 @@
               "RelativeDocumentMoniker": "WPFPracticeProject\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml.cs",
               "RelativeToolTip": "WPFPracticeProject\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAGcBAAAAAAAAAAAuwIUBAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAPoAAAAAAAAAAAAwwBYBAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T18:49:05.213Z",
               "EditorCaption": ""
@@ -135,8 +132,7 @@
               "ToolTip": "C:\\Users\\\u0414\u043C\u0438\u0442\u0440\u0438\u0439\\Documents\\GitHub\\WPFPracticeProject\\WPFPracticeProject\\WPFPracticeProject\\MainWindow.xaml",
               "RelativeToolTip": "WPFPracticeProject\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-06T18:48:54.874Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T18:48:54.874Z"
             },
             {
               "$type": "Document",
