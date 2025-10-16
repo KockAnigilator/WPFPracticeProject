@@ -78,8 +78,8 @@ namespace GameLogic
             {
                 int x = random.Next(FieldSize);
                 int y = random.Next(FieldSize);
-                int type = random.Next(0, 3);
-                int color = ColorType.GetRandomColor(random);
+                ShapeType type = EnumHelper.GetRandomEnumValue<ShapeType>(random);
+                ColorType color = EnumHelper.GetRandomEnumValue<ColorType>(random);
 
                 AddShape(new Shape(type, color, x, y));
             }
@@ -149,7 +149,7 @@ namespace GameLogic
             double changeProbability = shape.Age * ColorChangeProbabilityFactor;
             if (random.NextDouble() < changeProbability)
             {
-                shape.Color = ColorType.GetRandomColor(random);
+                shape.Color = EnumHelper.GetRandomEnumValue<ColorType>(random);
             }
         }
 
@@ -385,8 +385,8 @@ namespace GameLogic
         /// <returns>True если линия uniform, иначе False</returns>
         private bool IsUniformLine(List<Shape> shapes)
         {
-            int firstType = shapes[0].Type;
-            int firstColor = shapes[0].Color;
+            ShapeType firstType = shapes[0].Type;
+            ColorType firstColor = shapes[0].Color;
 
             foreach (var shape in shapes)
             {
@@ -510,7 +510,7 @@ namespace GameLogic
         /// <returns>True если все фигуры одного цвета, иначе False</returns>
         private bool CheckAllSameColor(List<Shape> shapes)
         {
-            int firstColor = shapes[0].Color;
+            ColorType firstColor = shapes[0].Color;
 
             foreach (var shape in shapes)
             {
@@ -530,7 +530,7 @@ namespace GameLogic
         /// <returns>True если все фигуры одного типа, иначе False</returns>
         private bool CheckAllSameType(List<Shape> shapes)
         {
-            int firstType = shapes[0].Type;
+            ShapeType firstType = shapes[0].Type;
 
             foreach (var shape in shapes)
             {
@@ -562,10 +562,10 @@ namespace GameLogic
             var status = IsGameOver() ? "Игра окончена" : "Игра продолжается";
 
             var colorStats = shapes.GroupBy(s => s.Color)
-                                  .Select(g => $"{ColorType.GetName(g.Key)}: {g.Count()}");
+                                  .Select(g => $"{g.Key.Description()}: {g.Count()}");
 
             var typeStats = shapes.GroupBy(s => s.Type)
-                                 .Select(g => $"{ShapeType.GetName(g.Key)}: {g.Count()}");
+                                 .Select(g => $"{g.Key.Description()}: {g.Count()}");
 
             return $"Ход: {MoveCount}, Очки: {Score}, Фигур: {shapes.Count()}\n" +
                    $"Цвета: {string.Join(", ", colorStats)}\n" +

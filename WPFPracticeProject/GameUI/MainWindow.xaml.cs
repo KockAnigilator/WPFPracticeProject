@@ -125,16 +125,13 @@ namespace GameUI
                 var visualShape = CreateShapeVisual(shape);
                 if (visualShape != null)
                 {
-                    // Позиционируем фигуру на канвасе
                     Canvas.SetLeft(visualShape, shape.X * CellSize);
                     Canvas.SetTop(visualShape, shape.Y * CellSize);
-
                     GameCanvas.Children.Add(visualShape);
 
-                    // Добавляем ToolTip с информацией о фигуре
                     var toolTip = new ToolTip();
-                    toolTip.Content = $"Тип: {ShapeType.GetName(shape.Type)}\n" +
-                                    $"Цвет: {ColorType.GetName(shape.Color)}\n" +
+                    toolTip.Content = $"Тип: {shape.Type.Description()}\n" +
+                                    $"Цвет: {shape.Color.Description()}\n" +
                                     $"Возраст: {shape.Age}\n" +
                                     $"Позиция: ({shape.X}, {shape.Y})";
                     visualShape.ToolTip = toolTip;
@@ -142,7 +139,6 @@ namespace GameUI
             }
             catch (Exception ex)
             {
-                // Игнорируем ошибки отрисовки отдельных фигур
                 System.Diagnostics.Debug.WriteLine($"Ошибка отрисовки фигуры: {ex.Message}");
             }
         }
@@ -183,7 +179,6 @@ namespace GameUI
                         StrokeThickness = strokeThickness
                     };
 
-                    // Создаем треугольник
                     polygon.Points.Add(new System.Windows.Point(CellSize / 2, 1));
                     polygon.Points.Add(new System.Windows.Point(1, CellSize - 1));
                     polygon.Points.Add(new System.Windows.Point(CellSize - 1, CellSize - 1));
@@ -202,7 +197,7 @@ namespace GameUI
             }
         }
 
-        private Brush GetColorBrush(int color)
+        private Brush GetColorBrush(ColorType color)
         {
             switch (color)
             {

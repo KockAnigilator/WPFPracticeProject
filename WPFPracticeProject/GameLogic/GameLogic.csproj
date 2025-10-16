@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorType.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="GameField.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="ShapeType.cs" />

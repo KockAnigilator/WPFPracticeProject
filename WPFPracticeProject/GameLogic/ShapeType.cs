@@ -1,38 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace GameLogic
 {
     /// <summary>
-    /// Статический класс для работы с типами фигур
+    /// Типы фигур
     /// </summary>
-    public static class ShapeType
+    public enum ShapeType
     {
-        public const int Circle = 0;
-        public const int Square = 1;
-        public const int Triangle = 2;
+        [Description("Круг")]
+        Circle = 0,
 
-        /// <summary>
-        /// Получает название типа фигуры по его числовому идентификатору
-        /// </summary>
-        /// <param name="type">Числовой идентификатор типа фигуры</param>
-        /// <returns>Название типа фигуры</returns>
-        public static string GetName(int type)
-        {
-            switch (type)
-            {
-                case Circle:
-                    return "Круг";
-                case Square:
-                    return "Квадрат";
-                case Triangle:
-                    return "Треугольник";
-                default:
-                    return "Неизвестно";
-            }
-        }
+        [Description("Квадрат")]
+        Square = 1,
+
+        [Description("Треугольник")]
+        Triangle = 2
     }
 }
