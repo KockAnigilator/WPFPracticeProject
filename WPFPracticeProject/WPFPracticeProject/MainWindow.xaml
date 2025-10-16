@@ -65,7 +65,7 @@
                             <TextBlock Text="Размер:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <Slider x:Name="arraySizeSlider" Minimum="1" Maximum="20" Width="200"/>
                             <TextBlock x:Name="arraySizeText" Margin="10,0" VerticalAlignment="Center" 
-                          Foreground="Blue" FontWeight="Bold"/>
+                      Foreground="Blue" FontWeight="Bold"/>
                         </StackPanel>
                     </GroupBox>
 
@@ -77,12 +77,23 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,5">
                                             <TextBlock Text="Элемент [" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding Index}" FontWeight="Bold" Margin="5,0" 
-                                          VerticalAlignment="Center"/>
+                                      VerticalAlignment="Center"/>
                                             <TextBlock Text="]: " VerticalAlignment="Center" Margin="0,0,5,0"/>
 
-                                            <!-- Универсальный TextBox для всех типов данных -->
-                                            <TextBox x:Name="textInput" Width="150" TextChanged="OnArrayElementTextChanged" 
-                                        VerticalContentAlignment="Center" ToolTip="{Binding InputHint}"/>
+                                            <!-- TextBox для числовых типов -->
+                                            <TextBox x:Name="textInput" Width="150" 
+                                         TextChanged="OnArrayElementTextChanged" 
+                                         VerticalContentAlignment="Center" 
+                                         ToolTip="{Binding InputHint}"
+                                         Visibility="{Binding IsTextBoxVisible}"/>
+
+                                            <!-- DatePicker для дат -->
+                                            <DatePicker x:Name="dateInput" Width="150" 
+                                            SelectedDateChanged="OnDatePickerSelectedDateChanged"
+                                            VerticalContentAlignment="Center" 
+                                            ToolTip="{Binding InputHint}"
+                                            Visibility="{Binding IsDatePickerVisible}"
+                                            SelectedDateFormat="Short"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -92,7 +103,7 @@
 
                     <GroupBox Header="Текущий массив" Grid.Row="2" Background="#FFFAFAFA">
                         <TextBox x:Name="arrayDisplay" IsReadOnly="True" Height="100" Margin="10"
-                    VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Background="#FFF5F5F5"/>
+                VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Background="#FFF5F5F5"/>
                     </GroupBox>
                 </Grid>
             </TabItem>

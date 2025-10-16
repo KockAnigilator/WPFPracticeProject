@@ -195,6 +195,7 @@ namespace WPFPracticeProject
             _currentDataType = typeof(int);
             UpdateHelpText("Выбран тип: int (целые числа)");
             UpdateInputHints();
+            UpdateArrayDisplay();
         }
 
         /// <summary>
@@ -205,6 +206,7 @@ namespace WPFPracticeProject
             _currentDataType = typeof(float);
             UpdateHelpText("Выбран тип: float (дробные числа)");
             UpdateInputHints();
+            UpdateArrayDisplay();
         }
 
         /// <summary>
@@ -215,7 +217,26 @@ namespace WPFPracticeProject
             _currentDataType = typeof(DateTime);
             UpdateHelpText("Выбран тип: DateTime (даты)");
             UpdateInputHints();
+            UpdateArrayDisplay();
         }
+
+        /// <summary>
+        /// Обновляет видимость элементов управления ввода в зависимости от типа данных
+        /// </summary>
+        private void UpdateInputControlVisibility(ArrayElementModel element)
+        {
+            if (_currentDataType == typeof(DateTime))
+            {
+                element.IsTextBoxVisible = Visibility.Collapsed;
+                element.IsDatePickerVisible = Visibility.Visible;
+            }
+            else
+            {
+                element.IsTextBoxVisible = Visibility.Visible;
+                element.IsDatePickerVisible = Visibility.Collapsed;
+            }
+        }
+
 
         /// <summary>
         /// Обновляет подсказки для всех полей ввода
@@ -228,6 +249,7 @@ namespace WPFPracticeProject
                 foreach (var item in arrayInputItems.Items.OfType<ArrayElementModel>())
                 {
                     item.InputHint = hint;
+                    UpdateInputControlVisibility(item);
                 }
             }
             catch (Exception ex)
@@ -244,9 +266,6 @@ namespace WPFPracticeProject
         /// Обработчик изменения размера массива через слайдер
         /// Создает новый массив указанного размера и обновляет интерфейс ввода
         /// </summary>
-        // <summary>
-        /// Обработчик изменения размера массива через слайдер
-        /// </summary>
         private void OnArraySizeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             try
@@ -258,11 +277,13 @@ namespace WPFPracticeProject
                 // Создание элементов управления для ввода каждого элемента массива
                 for (int i = 0; i < size; i++)
                 {
-                    arrayInputItems.Items.Add(new ArrayElementModel
+                    var element = new ArrayElementModel
                     {
                         Index = i,
                         InputHint = GetInputHint()
-                    });
+                    };
+                    UpdateInputControlVisibility(element);
+                    arrayInputItems.Items.Add(element);
                 }
 
                 UpdateArrayDisplay();
@@ -420,7 +441,16 @@ namespace WPFPracticeProject
         private void UpdateArrayDisplay()
         {
             arrayDisplay.Text = string.Join(Environment.NewLine,
-                _array.Select((item, i) => $"array[{i}] = {item ?? "null"}"));
+                _array.Select((item, i) =>
+                {
+                    if (item == null)
+                        return $"array[{i}] = null";
+
+                    if (_currentDataType == typeof(DateTime) && item is DateTime date)
+                        return $"array[{i}] = {date.ToShortDateString()}";
+                    else
+                        return $"array[{i}] = {item}";
+                }));
         }
 
         /// <summary>
@@ -695,9 +725,21 @@ namespace WPFPracticeProject
     /// <summary>
     /// Модель элемента массива для отображения в интерфейсе
     /// </summary>
+    /// <summary>
+    /// Модель элемента массива для отображения в интерфейсе
+    /// </summary>
     public class ArrayElementModel : INotifyPropertyChanged
     {
-        public int Index { get; set; }
+        private int _index;
+        public int Index
+        {
+            get => _index;
+            set
+            {
+                _index = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _inputHint;
         public string InputHint
@@ -706,6 +748,28 @@ namespace WPFPracticeProject
             set
             {
                 _inputHint = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _isTextBoxVisible = Visibility.Visible;
+        public Visibility IsTextBoxVisible
+        {
+            get => _isTextBoxVisible;
+            set
+            {
+                _isTextBoxVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Visibility _isDatePickerVisible = Visibility.Collapsed;
+        public Visibility IsDatePickerVisible
+        {
+            get => _isDatePickerVisible;
+            set
+            {
+                _isDatePickerVisible = value;
                 OnPropertyChanged();
             }
         }
